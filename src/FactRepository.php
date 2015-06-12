@@ -43,7 +43,7 @@
 
 namespace GanbaroDigital\FactFinder;
 
-interface FactsRepository
+interface FactRepository
 {
 
 }
