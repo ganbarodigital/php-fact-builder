@@ -8,7 +8,7 @@
     },
     "autoload": {
         "psr-4": {
-            "GanbaroDigital\\FactFinder": "src"
+            "GanbaroDigital\\FactFinder\\": "src"
         }
     }
 }
