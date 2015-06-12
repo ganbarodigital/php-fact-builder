@@ -43,12 +43,24 @@
 
 namespace GanbaroDigital\FactFinder\ComposerFacts\ComposerProject;
 
-use GanbaroDigital\FactFinder\FactFinder;
+use GanbaroDigital\FactFinder\RootFactFinder;
+use GanbaroDigital\FactFinder\SeedData;
 
-class DefinitionFactFinder implements FactFinder
+class DefinitionFactFinder implements RootFactFinder
 {
 	public function getDependencies()
 	{
 		return [];
+	}
+
+	// ==================================================================
+	//
+	// support for being a 'root' for fact finding
+	//
+	// ------------------------------------------------------------------
+
+	public function findFactsFromRoot(SeedData $rootData)
+	{
+
 	}
 }
