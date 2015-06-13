@@ -47,5 +47,16 @@ use GanbaroDigital\FactFinder\FactRepository;
 
 class InMemoryFactRepository implements FactRepository
 {
+	protected $facts = [];
 
+	public function addFact($fact)
+	{
+		$factType = get_class($fact);
+		$this->facts[$factType][] = $fact;
+	}
+
+	public function getFacts()
+	{
+		return $this->facts;
+	}
 }
