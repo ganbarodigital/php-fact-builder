@@ -43,8 +43,13 @@
 
 namespace GanbaroDigital\FactFinder\ComposerFacts\ComposerProject;
 
+use GanbaroDigital\FactFinder\FactRepository;
 use GanbaroDigital\FactFinder\RootFactFinder;
 use GanbaroDigital\FactFinder\SeedData;
+use GanbaroDigital\FactFinder\SeedDataTypes\FilesystemData;
+use GanbaroDigital\FactFinder\Specifications\IsValidJsonFile;
+use GanbaroDigital\FactFinder\ComposerFacts\ComposerProject\Builders\ComposerJsonFilePathBuilder;
+use GanbaroDigital\FactFinder\ComposerFacts\ComposerProject\FactFinding\HasAComposerJsonFile;
 
 class DefinitionFactFinder implements RootFactFinder
 {
@@ -59,8 +64,46 @@ class DefinitionFactFinder implements RootFactFinder
 	//
 	// ------------------------------------------------------------------
 
-	public function findFactsFromRoot(SeedData $rootData)
+	public function findFactsFromRoot(SeedData $rootData, FactRepository $factRepo)
 	{
+		// is this a composer project?
+		$this->requireIsComposerProject($rootData);
 
+		// our composer file
+		$composerJsonFilename = ComposerJsonFilePathBuilder::fromFilesystemData($rootData);
+
+		// do we have a valid JSON file?
+		$this->requireComposerFileIsValidJson($composerJsonFilename);
+
+		// at this point, we have something that is valid JSON, but that's
+		// all we know about it
+		$composerProjectFact = new ComposerProjectFact();
+		$composerProjectFact->setPathToFolder(dirname($composerJsonFilename));
+
+		// remember the fact
+		$factRepo->addFact($composerProjectFact);
+
+		// all done
+	}
+
+	public function findFactsFromFacts(FactsRepository $factsRepository)
+	{
+		//
+	}
+
+	protected function requireIsComposerProject(FilesystemData $rootData)
+	{
+		$spec = new HasAComposerJsonFile($rootData);
+		if (!$spec->isSatisfiedBy($rootData)) {
+			throw new E4xx_NotAComposerProject($rootData);
+		}
+	}
+
+	protected function requireComposerFileIsValidJson($composerJsonFilename)
+	{
+		$spec = new IsValidJsonFile($composerJsonFilename);
+		if (!$spec->isSatisfiedBy($composerJsonFilename)) {
+			throw new E4xx_ComposerJsonIsNotValid($composerJsonFilename);
+		}
 	}
 }
