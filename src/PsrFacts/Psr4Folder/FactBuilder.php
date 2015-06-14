@@ -34,57 +34,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/FactFinderQueues
+ * @package   FactFinder/PsrFacts
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-namespace GanbaroDigital\FactFinder\FactFinderQueues;
+namespace GanbaroDigital\FactFinder\PsrFacts\Psr4Folder;
 
-use GanbaroDigital\FactFinder\Fact;
-use GanbaroDigital\FactFinder\FactFinderQueue;
+use GanbaroDigital\FactFinder\DataFactBuilder;
+use GanbaroDigital\FactFinder\FactBuilderQueue;
+use GanbaroDigital\FactFinder\FactRepository;
 use GanbaroDigital\FactFinder\SeedData;
 
-class InMemoryFactFinderQueue implements FactFinderQueue
+class FactBuilder implements DataFactBuilder
 {
-	protected $factFinders = [];
-
-	public function addFactFinder(Fact $fact, $factFinderClasses)
+	public function buildFactsFromData(SeedData $data, FactRepository $factRepo, FactBuilderQueue $factBuilderQueue)
 	{
-		$this->factFinders[] = [ $fact, $factFinderClasses ];
-	}
-
-	public function addSeedDataToExplore(SeedData $data, $factFinderClass)
-	{
-		$this->factFinders[] = [ $data, [$factFinderClass] ];
-	}
-
-	public function iterateFactFinders()
-	{
-		// we keep going until we run out of fact finders
-		//
-		// we cannot use a foreach() loop here, as foreach() does not notice
-		// when we add new things to the end of the factFinders list
-		while (true) {
-			$nextGroup = each($this->factFinders);
-			if (!is_array($nextGroup)) {
-				// we're done here
-				return;
-			}
-
-			$nextFactToFindFrom = $nextGroup[1][0];
-			$finderClasses      = $nextGroup[1][1];
-
-			foreach ($finderClasses as $nextFactFinderClass) {
-				if (!class_exists($nextFactFinderClass)) {
-					throw new E4xx_FactFinderNotFound($nextFactFinderClass);
-				}
-
-				$nextFactFinder = new $nextFactFinderClass;
-				yield([$nextFactToFindFrom, $nextFactFinder]);
-			}
-		}
 	}
 }

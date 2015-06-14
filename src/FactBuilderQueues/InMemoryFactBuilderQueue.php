@@ -34,48 +34,57 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/ComposerFacts
+ * @package   FactFinder/FactFinderQueues
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-namespace GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile;
+namespace GanbaroDigital\FactFinder\FactBuilderQueues;
 
 use GanbaroDigital\FactFinder\Fact;
-use GanbaroDigital\FactFinder\DataFactFinder;
-use GanbaroDigital\FactFinder\FactFinderQueue;
-use GanbaroDigital\FactFinder\FactRepository;
+use GanbaroDigital\FactFinder\FactBuilderQueue;
 use GanbaroDigital\FactFinder\SeedData;
-use GanbaroDigital\FactFinder\SeedDataTypes\FilesystemData;
 
-use GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile\FactBuilders;
-
-class DefinitionFactFinder implements DataFactFinder
+class InMemoryFactBuilderQueue implements FactBuilderQueue
 {
-	public function getDependencies()
+	protected $factFinders = [];
+
+	public function addFactFinder(Fact $fact, $factFinderClasses)
 	{
-		return [
-			ComposerFacts\ComposerProject\DefinitionFactFinder::class,
-		];
+		$this->factFinders[] = [ $fact, $factFinderClasses ];
 	}
 
-	public function findFactsFromData(SeedData $data, FactRepository $factRepo, FactFinderQueue $factFinderQueue)
+	public function addSeedDataToExplore(SeedData $data, $factFinderClass)
 	{
-		switch (get_class($data)) {
-			case FilesystemData::class:
-				// create our new fact
-				$composerJsonFileFact = FactBuilders\ComposerJsonFileFactBuilder::fromFilesystemData($data);
+		$this->factFinders[] = [ $data, [$factFinderClass] ];
+	}
 
-				// now, run our collection of fact builders to exact more
-				// meaning from this fact's raw data
-				FactBuilders\AutoloadPsr0FactBuilder::fromComposerJsonFileFact($composerJsonFileFact, $factFinderQueue);
-				FactBuilders\AutoloadPsr4FactBuilder::fromComposerJsonFileFact($composerJsonFileFact, $factFinderQueue);
+	public function iterateFactFinders()
+	{
+		// we keep going until we run out of fact finders
+		//
+		// we cannot use a foreach() loop here, as foreach() does not notice
+		// when we add new things to the end of the factFinders list
+		while (true) {
+			$nextGroup = each($this->factFinders);
+			if (!is_array($nextGroup)) {
+				// we're done here
+				return;
+			}
 
-				// we need to add this fact into the repository
-				$factRepo->addFact($composerJsonFileFact);
-				break;
+			$nextFactToFindFrom = $nextGroup[1][0];
+			$finderClasses      = $nextGroup[1][1];
+
+			foreach ($finderClasses as $nextFactFinderClass) {
+				if (!class_exists($nextFactFinderClass)) {
+					throw new E4xx_FactFinderNotFound($nextFactFinderClass);
+				}
+
+				$nextFactFinder = new $nextFactFinderClass;
+				yield([$nextFactToFindFrom, $nextFactFinder]);
+			}
 		}
 	}
 }

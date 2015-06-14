@@ -43,7 +43,7 @@
 
 namespace GanbaroDigital\FactFinder;
 
-interface FactFinderQueue
+interface FactBuilderQueue
 {
 
 }

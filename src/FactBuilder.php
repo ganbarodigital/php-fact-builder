@@ -43,7 +43,6 @@
 
 namespace GanbaroDigital\FactFinder;
 
-interface DataFactFinder extends FactFinder
+interface FactBuilder
 {
-	public function findFactsFromData(SeedData $rootData, FactRepository $factsRepo, FactFinderQueue $factFinderQueue);
 }

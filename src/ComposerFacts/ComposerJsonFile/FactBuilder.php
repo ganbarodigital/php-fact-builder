@@ -34,23 +34,48 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/PsrFacts
+ * @package   FactFinder/ComposerFacts
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-namespace GanbaroDigital\FactFinder\PsrFacts\Psr0Folder;
+namespace GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile;
 
-use GanbaroDigital\FactFinder\DataFactFinder;
-use GanbaroDigital\FactFinder\FactFinderQueue;
+use GanbaroDigital\FactFinder\Fact;
+use GanbaroDigital\FactFinder\DataFactBuilder;
+use GanbaroDigital\FactFinder\FactBuilderQueue;
 use GanbaroDigital\FactFinder\FactRepository;
 use GanbaroDigital\FactFinder\SeedData;
+use GanbaroDigital\FactFinder\SeedDataTypes\FilesystemData;
 
-class DefinitionFactFinder implements DataFactFinder
+use GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile\FactBuilders;
+
+class FactBuilder implements DataFactBuilder
 {
-	public function findFactsFromData(SeedData $data, FactRepository $factRepo, FactFinderQueue $factFinderQueue)
+	public function getDependencies()
 	{
+		return [
+			ComposerFacts\ComposerProject\DefinitionFactFinder::class,
+		];
+	}
+
+	public function buildFactsFromData(SeedData $data, FactRepository $factRepo, FactBuilderQueue $factBuilderQueue)
+	{
+		switch (get_class($data)) {
+			case FilesystemData::class:
+				// create our new fact
+				$composerJsonFileFact = FactBuilders\ComposerJsonFileFactBuilder::fromFilesystemData($data);
+
+				// now, run our collection of fact builders to exact more
+				// meaning from this fact's raw data
+				FactBuilders\AutoloadPsr0FactBuilder::fromComposerJsonFileFact($composerJsonFileFact, $factBuilderQueue);
+				FactBuilders\AutoloadPsr4FactBuilder::fromComposerJsonFileFact($composerJsonFileFact, $factBuilderQueue);
+
+				// we need to add this fact into the repository
+				$factRepo->addFact($composerJsonFileFact);
+				break;
+		}
 	}
 }

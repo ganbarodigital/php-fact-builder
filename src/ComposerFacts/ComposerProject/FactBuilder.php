@@ -44,9 +44,9 @@
 namespace GanbaroDigital\FactFinder\ComposerFacts\ComposerProject;
 
 use GanbaroDigital\FactFinder\Fact;
-use GanbaroDigital\FactFinder\FactFinderQueue;
+use GanbaroDigital\FactFinder\FactBuilderQueue;
 use GanbaroDigital\FactFinder\FactRepository;
-use GanbaroDigital\FactFinder\DataFactFinder;
+use GanbaroDigital\FactFinder\DataFactBuilder;
 use GanbaroDigital\FactFinder\SeedData;
 use GanbaroDigital\FactFinder\SeedDataTypes\FilesystemData;
 use GanbaroDigital\FactFinder\Specifications\IsValidJsonFile;
@@ -54,7 +54,7 @@ use GanbaroDigital\FactFinder\ComposerFacts\ComposerProject\Builders\ComposerJso
 use GanbaroDigital\FactFinder\ComposerFacts\ComposerProject\FactFinding\HasAComposerJsonFile;
 use GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile;
 
-class DefinitionFactFinder implements DataFactFinder
+class FactBuilder implements DataFactBuilder
 {
 	public function getDependencies()
 	{
@@ -67,7 +67,7 @@ class DefinitionFactFinder implements DataFactFinder
 	//
 	// ------------------------------------------------------------------
 
-	public function findFactsFromData(SeedData $rootData, FactRepository $factRepo, FactFinderQueue $factFinderQueue)
+	public function buildFactsFromData(SeedData $rootData, FactRepository $factRepo, FactBuilderQueue $factBuilderQueue)
 	{
 		// is this a composer project?
 		$this->requireIsComposerProject($rootData);
@@ -88,8 +88,8 @@ class DefinitionFactFinder implements DataFactFinder
 		$factRepo->addFact($composerProjectFact);
 
 		// trigger the next set of facts to explore
-		$factFinderQueue->addSeedDataToExplore(
-			new FilesystemData($composerJsonFilename), ComposerJsonFile\DefinitionFactFinder::class
+		$factBuilderQueue->addSeedDataToExplore(
+			new FilesystemData($composerJsonFilename), ComposerJsonFile\FactBuilder::class
 		);
 
 		// all done

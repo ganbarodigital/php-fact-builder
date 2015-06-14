@@ -34,23 +34,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/PsrFacts
+ * @package   FactFinder/Interfaces
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-namespace GanbaroDigital\FactFinder\PsrFacts\Psr4Folder;
+namespace GanbaroDigital\FactFinder;
 
-use GanbaroDigital\FactFinder\DataFactFinder;
-use GanbaroDigital\FactFinder\FactFinderQueue;
-use GanbaroDigital\FactFinder\FactRepository;
-use GanbaroDigital\FactFinder\SeedData;
-
-class DefinitionFactFinder implements DataFactFinder
+interface DataFactBuilder extends FactBuilder
 {
-	public function findFactsFromData(SeedData $data, FactRepository $factRepo, FactFinderQueue $factFinderQueue)
-	{
-	}
+	public function buildFactsFromData(SeedData $rootData, FactRepository $factsRepo, FactBuilderQueue $factBuilderQueue);
 }

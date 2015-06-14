@@ -42,11 +42,11 @@
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-use GanbaroDigital\FactFinder\DataFactFinder;
+use GanbaroDigital\FactFinder\DataFactBuilder;
 use GanbaroDigital\FactFinder\SeedData;
 use GanbaroDigital\FactFinder\SeedDataTypes\FilesystemData;
 use GanbaroDigital\FactFinder\FactRepositories\InMemoryFactRepository;
-use GanbaroDigital\FactFinder\FactFinderQueues\InMemoryFactFinderQueue;
+use GanbaroDigital\FactFinder\FactBuilderQueues\InMemoryFactBuilderQueue;
 
 // temporary
 require_once (__DIR__ . '/../vendor/autoload.php');
@@ -58,12 +58,12 @@ $rootFactName = $argv[1];
 $rootFactSeed = $argv[2];
 
 // do we have a fact finder that we can use here?
-$rootFactFinderName = $rootFactName . '\DefinitionFactFinder';
+$rootFactFinderName = $rootFactName . '\FactBuilder';
 if (!class_exists($rootFactFinderName)) {
 	die("Cannot find root fact finder class '{$rootFactFinderName}" . PHP_EOL);
 }
 $rootFactFinder = new $rootFactFinderName();
-if (!$rootFactFinder instanceof DataFactFinder) {
+if (!$rootFactFinder instanceof DataFactBuilder) {
 	die("class '{$rootFactFinderName}' does not support being a 'root' for fact finding" . PHP_EOL);
 }
 
@@ -71,7 +71,7 @@ if (!$rootFactFinder instanceof DataFactFinder) {
 $factRepository = new InMemoryFactRepository();
 
 // we need something to keep track of where we should look next
-$factFinderQueue = new InMemoryFactFinderQueue();
+$factFinderQueue = new InMemoryFactBuilderQueue();
 
 // add our initial piece of seed data to the queue
 $factFinderSeed = new FilesystemData($rootFactSeed);
@@ -81,7 +81,7 @@ $factFinderQueue->addSeedDataToExplore($factFinderSeed, $rootFactFinderName);
 foreach ($factFinderQueue->iterateFactFinders() as list ($fact, $factFinder)) {
 	echo "Finding facts: " . get_class($factFinder) . PHP_EOL;
 	if ($fact instanceof SeedData) {
-		$factFinder->findFactsFromData($fact, $factRepository, $factFinderQueue);
+		$factFinder->buildFactsFromData($fact, $factRepository, $factFinderQueue);
 	}
 	else if ($fact instanceof Fact) {
 		$factFinder->findFactsFromFact($fact, $factRepository, $factFinderQueue);
