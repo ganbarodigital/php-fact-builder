@@ -53,4 +53,14 @@ class NamespaceData implements Data
 		$this->folder         = $folder;
 		$this->autoloadScheme = $autoloadScheme;
 	}
+
+	public function getFolder()
+	{
+		return $this->folder;
+	}
+
+	public function getNamespace()
+	{
+		return $this->namespace;
+	}
 }
