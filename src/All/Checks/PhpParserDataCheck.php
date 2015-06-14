@@ -34,28 +34,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/Specifications
+ * @package   FactFinder/Checks
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-namespace GanbaroDigital\FactFinder\Specifications;
+namespace GanbaroDigital\FactFinder\All\Checks;
 
-use GanbaroDigital\FactFinder\SeedDataTypes\FilesystemData;
+use GanbaroDigital\FactFinder\SeedDataTypes\PhpParserData;
 
-interface FilesystemSpecification
+interface PhpParserCheck
 {
 	/**
-	 * does the provided filesystem data meet the requirements for this
-	 * specification?
+	 * does the provided PHP Parser data meet the requirements for this
+	 * check?
 	 *
-	 * @param  FilesystemData $fsData
+	 * @param  PhpParserData $parserData
 	 *         the data to inspect
 	 * @return boolean
-	 *         TRUE if the filesystem data meets the requirements
+	 *         TRUE if the PHP Parser data meets the requirements
 	 *         FALSE otherwise
 	 */
-	public function isSatisfiedBy(FilesystemData $fsData);
+	public function isSatisfiedBy(PhpParserData $parserData);
 }

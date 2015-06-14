@@ -34,28 +34,44 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/Specifications
+ * @package   FactFinder/Checks
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-namespace GanbaroDigital\FactFinder\Specifications;
+namespace GanbaroDigital\FactFinder\All\Checks;
 
-use GanbaroDigital\FactFinder\SeedDataTypes\PhpParserData;
+use GanbaroDigital\FactFinder\SeedDataTypes\FilesystemData;
 
-interface PhpParserSpecification
+class IsValidJsonFile
 {
 	/**
-	 * does the provided PHP Parser data meet the requirements for this
-	 * specification?
+	 * is the given filename pointing at valid JSON?
 	 *
-	 * @param  PhpParserData $parserData
-	 *         the data to inspect
+	 * @param  string $filename
+	 *         the filename to inspect
 	 * @return boolean
-	 *         TRUE if the PHP Parser data meets the requirements
+	 *         TRUE if the file is valid JSON
 	 *         FALSE otherwise
 	 */
-	public function isSatisfiedBy(PhpParserData $parserData);
+	public function isSatisfiedBy($filename)
+	{
+		if (!is_file($filename)) {
+			return false;
+		}
+
+		$contents = file_get_contents($filename);
+		if (empty($contents)) {
+			return false;
+		}
+
+		$payload = json_decode($contents);
+		if ($payload === null) {
+			return false;
+		}
+
+		return true;
+	}
 }

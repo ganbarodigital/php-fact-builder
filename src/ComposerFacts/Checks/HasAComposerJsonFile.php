@@ -43,12 +43,12 @@
 
 namespace GanbaroDigital\FactFinder\ComposerFacts\Checks;
 
-use GanbaroDigital\FactFinder\Specifications\FilesystemSpecification;
+use GanbaroDigital\FactFinder\All\Checks\FilesystemCheck;
 use GanbaroDigital\FactFinder\SeedDataTypes\FilesystemData;
 
 use GanbaroDigital\FactFinder\ComposerFacts\ValueBuilders\ComposerJsonFilePathBuilder;
 
-class HasAComposerJsonFile implements FilesystemSpecification
+class HasAComposerJsonFile implements FilesystemCheck
 {
 	public function isSatisfiedBy(FilesystemData $fsData)
 	{

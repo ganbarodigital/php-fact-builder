@@ -49,7 +49,7 @@ use GanbaroDigital\FactFinder\FactRepository;
 use GanbaroDigital\FactFinder\DataFactBuilder;
 use GanbaroDigital\FactFinder\SeedData;
 use GanbaroDigital\FactFinder\SeedDataTypes\FilesystemData;
-use GanbaroDigital\FactFinder\Specifications\IsValidJsonFile;
+use GanbaroDigital\FactFinder\All\Checks\IsValidJsonFile;
 use GanbaroDigital\FactFinder\ComposerFacts\Checks\HasAComposerJsonFile;
 use GanbaroDigital\FactFinder\ComposerFacts;
 
