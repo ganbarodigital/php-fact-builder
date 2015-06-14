@@ -79,6 +79,7 @@ class DefinitionFactFinder implements RootFactFinder
 		// all we know about it
 		$composerProjectFact = new ComposerProjectFact();
 		$composerProjectFact->setPathToFolder(dirname($composerJsonFilename));
+		$composerProjectFact->setHasComposerJson(true);
 
 		// remember the fact
 		$factRepo->addFact($composerProjectFact);
