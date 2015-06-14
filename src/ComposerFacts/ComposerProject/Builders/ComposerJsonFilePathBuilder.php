@@ -44,12 +44,26 @@
 namespace GanbaroDigital\FactFinder\ComposerFacts\ComposerProject\Builders;
 
 use GanbaroDigital\FactFinder\SeedDataTypes\FilesystemData;
+use GanbaroDigital\FactFinder\ComposerFacts\ComposerProject\ComposerProjectFact;
 
 class ComposerJsonFilePathBuilder
 {
+	static public function fromComposerProjectFact(ComposerProjectFact $fact)
+	{
+		$folderPath = $fact->getPathToFolder();
+		$composerJsonPath = self::addFilenameToPath($folderPath);
+		return $composerJsonPath;
+	}
+
 	static public function fromFilesystemData(FilesystemData $fsData)
 	{
 		$folderPath = $fsData->getFileOrFolderPath();
+		$composerJsonPath = self::addFilenameToPath($folderPath);
+		return $composerJsonPath;
+	}
+
+	static protected function addFilenameToPath($folderPath)
+	{
 		$composerJsonPath = $folderPath . DIRECTORY_SEPARATOR . 'composer.json';
 		return $composerJsonPath;
 	}
