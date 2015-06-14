@@ -43,7 +43,10 @@
 
 namespace GanbaroDigital\FactFinder\ComposerFacts\ComposerPackage;
 
+use GanbaroDigital\FactFinder\Fact;
 use GanbaroDigital\FactFinder\FactFinder;
+use GanbaroDigital\FactFinder\FactRepository;
+use GanbaroDigital\FactFinder\FactFinderQueue;
 use GanbaroDigital\FactFinder\ComposerFacts;
 
 class DefinitionFactFinder implements FactFinder
@@ -54,4 +57,12 @@ class DefinitionFactFinder implements FactFinder
 			ComposerFacts\ComposerProject\DefinitionFactFinder::class,
 		];
 	}
+
+	public function findFactsFromFact(Fact $fact, FactRepository $factRepo, FactFinderQueue $factFinderQueue)
+	{
+		switch(get_class($fact)) {
+			case ComposerFacts\Composer
+		}
+	}
+
 }

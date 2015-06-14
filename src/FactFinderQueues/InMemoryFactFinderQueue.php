@@ -43,8 +43,9 @@
 
 namespace GanbaroDigital\FactFinder\FactFinderQueues;
 
-use GanbaroDigital\FactFinder\FactFinderQueue;
 use GanbaroDigital\FactFinder\Fact;
+use GanbaroDigital\FactFinder\FactFinderQueue;
+use GanbaroDigital\FactFinder\SeedData;
 
 class InMemoryFactFinderQueue implements FactFinderQueue
 {

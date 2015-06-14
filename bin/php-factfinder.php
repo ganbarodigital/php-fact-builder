@@ -42,7 +42,8 @@
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-use GanbaroDigital\FactFinder\RootFactFinder;
+use GanbaroDigital\FactFinder\DataFactFinder;
+use GanbaroDigital\FactFinder\SeedData;
 use GanbaroDigital\FactFinder\SeedDataTypes\FilesystemData;
 use GanbaroDigital\FactFinder\FactRepositories\InMemoryFactRepository;
 use GanbaroDigital\FactFinder\FactFinderQueues\InMemoryFactFinderQueue;
@@ -62,7 +63,7 @@ if (!class_exists($rootFactFinderName)) {
 	die("Cannot find root fact finder class '{$rootFactFinderName}" . PHP_EOL);
 }
 $rootFactFinder = new $rootFactFinderName();
-if (!$rootFactFinder instanceof RootFactFinder) {
+if (!$rootFactFinder instanceof DataFactFinder) {
 	die("class '{$rootFactFinderName}' does not support being a 'root' for fact finding" . PHP_EOL);
 }
 
@@ -72,14 +73,22 @@ $factRepository = new InMemoryFactRepository();
 // we need something to keep track of where we should look next
 $factFinderQueue = new InMemoryFactFinderQueue();
 
-// alright, let's see where this takes us
+// add our initial piece of seed data to the queue
 $factFinderSeed = new FilesystemData($rootFactSeed);
-$rootFactFinder->findFactsFromRoot($factFinderSeed, $factRepository, $factFinderQueue);
+$factFinderQueue->addSeedDataToExplore($factFinderSeed, $rootFactFinderName);
 
-// hopefully, our root fact has given us at least one more fact finder to use
+// this is the fact-finding loop
 foreach ($factFinderQueue->iterateFactFinders() as list ($fact, $factFinder)) {
 	echo "Finding facts: " . get_class($factFinder) . PHP_EOL;
-	$factFinder->findFactsFromFact($fact, $factRepository, $factFinderQueue);
+	if ($fact instanceof SeedData) {
+		$factFinder->findFactsFromData($fact, $factRepository, $factFinderQueue);
+	}
+	else if ($fact instanceof Fact) {
+		$factFinder->findFactsFromFact($fact, $factRepository, $factFinderQueue);
+	}
+	else {
+		die("class '" . get_class($fact) . "' is unsupported in the fact finding loop" . PHP_EOL);
+	}
 }
 
 // to make it easier to inspect, dump the facts as JSON

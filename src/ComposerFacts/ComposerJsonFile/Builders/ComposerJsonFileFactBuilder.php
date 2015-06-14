@@ -43,18 +43,17 @@
 
 namespace GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile\Builders;
 
-use GanbaroDigital\FactFinder\ComposerFacts\ComposerProject\Builders\ComposerJsonFilePathBuilder;
-use GanbaroDigital\FactFinder\ComposerFacts\ComposerProject\ComposerProjectFact;
+use GanbaroDigital\FactFinder\SeedDataTypes\FilesystemData;
 use GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile\ComposerJsonFileFact;
 
 class ComposerJsonFileFactBuilder
 {
-	static public function fromComposerProjectFact(ComposerProjectFact $composerProjectFact)
+	static public function fromFilesystemData(FilesystemData $fsData)
 	{
 		$retval = new ComposerJsonFileFact;
 
 		// load the composer file
-		$composerJsonFilename = ComposerJsonFilePathBuilder::fromComposerProjectFact($composerProjectFact);
+		$composerJsonFilename = $fsData->getFileOrFolderPath();
 		$contents = json_decode(file_get_contents($composerJsonFilename));
 
 		// convert the contents to facts
