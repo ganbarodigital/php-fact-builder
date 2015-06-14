@@ -50,7 +50,7 @@ use GanbaroDigital\FactFinder\DataFactBuilder;
 use GanbaroDigital\FactFinder\SeedData;
 use GanbaroDigital\FactFinder\SeedDataTypes\FilesystemData;
 use GanbaroDigital\FactFinder\Specifications\IsValidJsonFile;
-use GanbaroDigital\FactFinder\ComposerFacts\ComposerProject\FactFinding\HasAComposerJsonFile;
+use GanbaroDigital\FactFinder\ComposerFacts\Checks\HasAComposerJsonFile;
 use GanbaroDigital\FactFinder\ComposerFacts;
 
 class FactBuilder implements DataFactBuilder

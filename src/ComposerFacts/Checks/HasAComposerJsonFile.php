@@ -41,7 +41,7 @@
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-namespace GanbaroDigital\FactFinder\ComposerFacts\ComposerProject\FactFinding;
+namespace GanbaroDigital\FactFinder\ComposerFacts\Checks;
 
 use GanbaroDigital\FactFinder\Specifications\FilesystemSpecification;
 use GanbaroDigital\FactFinder\SeedDataTypes\FilesystemData;
