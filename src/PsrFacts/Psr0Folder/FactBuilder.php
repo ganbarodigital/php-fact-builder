@@ -47,10 +47,13 @@ use GanbaroDigital\FactFinder\DataFactBuilder;
 use GanbaroDigital\FactFinder\FactBuilderQueue;
 use GanbaroDigital\FactFinder\FactRepository;
 use GanbaroDigital\FactFinder\All\Data;
+use GanbaroDigital\FactFinder\All\DataTypes\FilesystemData;
 use GanbaroDigital\FactFinder\All\DataTypes\NamespaceData;
+use GanbaroDigital\FactFinder\All\DataTypes\PhpFileData;
 
-use GanbaroDigital\FactFinder\PsrFacts\Psr0Folder\FactBuilders;
 use GanbaroDigital\FactFinder\PhpFacts;
+use GanbaroDigital\FactFinder\PsrFacts;
+use GanbaroDigital\FactFinder\PsrFacts\Psr0Folder\FactBuilders;
 
 class FactBuilder implements DataFactBuilder
 {
@@ -58,6 +61,16 @@ class FactBuilder implements DataFactBuilder
 	{
 		switch (get_class($data)) {
 			case NamespaceData::class:
+				$path      = $data->getFolder();
+				$namespace = $data->getNamespace();
+
+				$data = new FilesystemData($path);
+				$phpFiles = PsrFacts\ValueBuilders\FolderToPhpSourceFiles::fromFilesystemData($data);
+
+				foreach ($phpFiles as $phpFile) {
+					$data = new PhpFileData($phpFile, $namespace);
+					$factBuilderQueue->addSeedDataToExplore($data, PhpFacts\PhpSourceCodeFile\FactBuilder::class);
+				}
 				break;
 		}
 	}
