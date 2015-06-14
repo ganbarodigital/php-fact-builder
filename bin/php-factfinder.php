@@ -71,3 +71,6 @@ $factRepository = new InMemoryFactRepository();
 // alright, let's see where this takes us
 $factFinderSeed = new FilesystemData($rootFactSeed);
 $rootFactFinder->findFactsFromRoot($factFinderSeed, $factRepository);
+
+// to make it easier to inspect, dump the facts as JSON
+echo json_encode($factRepository->getFacts(), JSON_PRETTY_PRINT) . PHP_EOL;
