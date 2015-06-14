@@ -45,10 +45,11 @@ namespace GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile\FactBuilders;
 
 use GanbaroDigital\FactFinder\FactBuilderQueue;
 use GanbaroDigital\FactFinder\SeedDataTypes\NamespaceData;
+use GanbaroDigital\FactFinder\ComposerFacts;
 use GanbaroDigital\FactFinder\PsrFacts;
 
 use GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile\ComposerJsonFileFact;
-use GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile\Builders\PathToAutoloadFolder;
+use GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile\ValueBuilders\PathToAutoloadFolder;
 
 class AutoloadPsr0FactBuilder
 {
@@ -64,7 +65,7 @@ class AutoloadPsr0FactBuilder
 
 		// at this point, yes we do
 		foreach ($composerJson->autoload->{'psr-0'} as $namespace => $subFolder) {
-			$projectFolder = PathToAutoloadFolder::fromComposerJsonFileFact($fact, $subFolder);
+			$projectFolder = ComposerFacts\ValueBuilders\PathToAutoloadFolder::fromComposerJsonFileFact($fact, $subFolder);
 			$seedData = new NamespaceData($namespace, $projectFolder, 'psr0');
 			$factBuilderQueue->addSeedDataToExplore($seedData, PsrFacts\Psr0Folder\FactBuilder::class);
 		}

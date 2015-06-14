@@ -46,7 +46,7 @@ namespace GanbaroDigital\FactFinder\ComposerFacts\ComposerProject\FactFinding;
 use GanbaroDigital\FactFinder\Specifications\FilesystemSpecification;
 use GanbaroDigital\FactFinder\SeedDataTypes\FilesystemData;
 
-use GanbaroDigital\FactFinder\ComposerFacts\ComposerProject\Builders\ComposerJsonFilePathBuilder;
+use GanbaroDigital\FactFinder\ComposerFacts\ValueBuilders\ComposerJsonFilePathBuilder;
 
 class HasAComposerJsonFile implements FilesystemSpecification
 {

@@ -41,7 +41,7 @@
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-namespace GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile\Builders;
+namespace GanbaroDigital\FactFinder\ComposerFacts\ValueBuilders;
 
 use GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile\ComposerJsonFileFact;
 

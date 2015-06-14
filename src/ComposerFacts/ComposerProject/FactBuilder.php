@@ -50,9 +50,8 @@ use GanbaroDigital\FactFinder\DataFactBuilder;
 use GanbaroDigital\FactFinder\SeedData;
 use GanbaroDigital\FactFinder\SeedDataTypes\FilesystemData;
 use GanbaroDigital\FactFinder\Specifications\IsValidJsonFile;
-use GanbaroDigital\FactFinder\ComposerFacts\ComposerProject\Builders\ComposerJsonFilePathBuilder;
 use GanbaroDigital\FactFinder\ComposerFacts\ComposerProject\FactFinding\HasAComposerJsonFile;
-use GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile;
+use GanbaroDigital\FactFinder\ComposerFacts;
 
 class FactBuilder implements DataFactBuilder
 {
@@ -73,7 +72,7 @@ class FactBuilder implements DataFactBuilder
 		$this->requireIsComposerProject($rootData);
 
 		// our composer file
-		$composerJsonFilename = ComposerJsonFilePathBuilder::fromFilesystemData($rootData);
+		$composerJsonFilename = ComposerFacts\ValueBuilders\ComposerJsonFilePathBuilder::fromFilesystemData($rootData);
 
 		// do we have a valid JSON file?
 		$this->requireComposerFileIsValidJson($composerJsonFilename);
@@ -89,7 +88,7 @@ class FactBuilder implements DataFactBuilder
 
 		// trigger the next set of facts to explore
 		$factBuilderQueue->addSeedDataToExplore(
-			new FilesystemData($composerJsonFilename), ComposerJsonFile\FactBuilder::class
+			new FilesystemData($composerJsonFilename), ComposerFacts\ComposerJsonFile\FactBuilder::class
 		);
 
 		// all done
