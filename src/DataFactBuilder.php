@@ -43,7 +43,9 @@
 
 namespace GanbaroDigital\FactFinder;
 
+use GanbaroDigital\FactFinder\All\Data;
+
 interface DataFactBuilder extends FactBuilder
 {
-	public function buildFactsFromData(SeedData $rootData, FactRepository $factsRepo, FactBuilderQueue $factBuilderQueue);
+	public function buildFactsFromData(Data $data, FactRepository $factsRepo, FactBuilderQueue $factBuilderQueue);
 }

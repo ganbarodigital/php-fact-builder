@@ -44,7 +44,7 @@
 namespace GanbaroDigital\FactFinder\ComposerFacts\Checks;
 
 use GanbaroDigital\FactFinder\All\Checks\FilesystemCheck;
-use GanbaroDigital\FactFinder\SeedDataTypes\FilesystemData;
+use GanbaroDigital\FactFinder\All\DataTypes\FilesystemData;
 
 use GanbaroDigital\FactFinder\ComposerFacts\ValueBuilders\ComposerJsonFilePathBuilder;
 

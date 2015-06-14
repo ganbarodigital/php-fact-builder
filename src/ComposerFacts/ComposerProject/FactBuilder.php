@@ -47,8 +47,8 @@ use GanbaroDigital\FactFinder\Fact;
 use GanbaroDigital\FactFinder\FactBuilderQueue;
 use GanbaroDigital\FactFinder\FactRepository;
 use GanbaroDigital\FactFinder\DataFactBuilder;
-use GanbaroDigital\FactFinder\SeedData;
-use GanbaroDigital\FactFinder\SeedDataTypes\FilesystemData;
+use GanbaroDigital\FactFinder\All\Data;
+use GanbaroDigital\FactFinder\All\DataTypes\FilesystemData;
 use GanbaroDigital\FactFinder\All\Checks\IsValidJsonFile;
 use GanbaroDigital\FactFinder\ComposerFacts\Checks\HasAComposerJsonFile;
 use GanbaroDigital\FactFinder\ComposerFacts;
@@ -66,7 +66,7 @@ class FactBuilder implements DataFactBuilder
 	//
 	// ------------------------------------------------------------------
 
-	public function buildFactsFromData(SeedData $rootData, FactRepository $factRepo, FactBuilderQueue $factBuilderQueue)
+	public function buildFactsFromData(Data $rootData, FactRepository $factRepo, FactBuilderQueue $factBuilderQueue)
 	{
 		// is this a composer project?
 		$this->requireIsComposerProject($rootData);

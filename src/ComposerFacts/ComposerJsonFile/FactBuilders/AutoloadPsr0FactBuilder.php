@@ -44,7 +44,7 @@
 namespace GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile\FactBuilders;
 
 use GanbaroDigital\FactFinder\FactBuilderQueue;
-use GanbaroDigital\FactFinder\SeedDataTypes\NamespaceData;
+use GanbaroDigital\FactFinder\All\DataTypes\NamespaceData;
 use GanbaroDigital\FactFinder\ComposerFacts;
 use GanbaroDigital\FactFinder\PsrFacts;
 

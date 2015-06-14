@@ -43,7 +43,7 @@
 
 namespace GanbaroDigital\FactFinder\All\Checks;
 
-use GanbaroDigital\FactFinder\SeedDataTypes\FilesystemData;
+use GanbaroDigital\FactFinder\All\DataTypes\FilesystemData;
 
 class IsValidJsonFile
 {

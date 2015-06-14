@@ -43,7 +43,7 @@
 
 namespace GanbaroDigital\FactFinder\All\Checks;
 
-use GanbaroDigital\FactFinder\SeedDataTypes\PhpParserData;
+use GanbaroDigital\FactFinder\All\DataTypes\PhpParserData;
 
 interface PhpParserCheck
 {

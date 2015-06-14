@@ -45,7 +45,7 @@ namespace GanbaroDigital\FactFinder\FactBuilderQueues;
 
 use GanbaroDigital\FactFinder\Fact;
 use GanbaroDigital\FactFinder\FactBuilderQueue;
-use GanbaroDigital\FactFinder\SeedData;
+use GanbaroDigital\FactFinder\All\Data;
 
 class InMemoryFactBuilderQueue implements FactBuilderQueue
 {
@@ -56,7 +56,7 @@ class InMemoryFactBuilderQueue implements FactBuilderQueue
 		$this->factFinders[] = [ $fact, $factFinderClasses ];
 	}
 
-	public function addSeedDataToExplore(SeedData $data, $factFinderClass)
+	public function addSeedDataToExplore(Data $data, $factFinderClass)
 	{
 		$this->factFinders[] = [ $data, [$factFinderClass] ];
 	}

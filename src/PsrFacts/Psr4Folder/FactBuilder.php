@@ -46,11 +46,11 @@ namespace GanbaroDigital\FactFinder\PsrFacts\Psr4Folder;
 use GanbaroDigital\FactFinder\DataFactBuilder;
 use GanbaroDigital\FactFinder\FactBuilderQueue;
 use GanbaroDigital\FactFinder\FactRepository;
-use GanbaroDigital\FactFinder\SeedData;
+use GanbaroDigital\FactFinder\Data;
 
 class FactBuilder implements DataFactBuilder
 {
-	public function buildFactsFromData(SeedData $data, FactRepository $factRepo, FactBuilderQueue $factBuilderQueue)
+	public function buildFactsFromData(Data $data, FactRepository $factRepo, FactBuilderQueue $factBuilderQueue)
 	{
 	}
 }

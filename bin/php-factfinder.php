@@ -43,8 +43,8 @@
  */
 
 use GanbaroDigital\FactFinder\DataFactBuilder;
-use GanbaroDigital\FactFinder\SeedData;
-use GanbaroDigital\FactFinder\SeedDataTypes\FilesystemData;
+use GanbaroDigital\FactFinder\All\Data;
+use GanbaroDigital\FactFinder\All\DataTypes\FilesystemData;
 use GanbaroDigital\FactFinder\FactRepositories\InMemoryFactRepository;
 use GanbaroDigital\FactFinder\FactBuilderQueues\InMemoryFactBuilderQueue;
 
@@ -80,7 +80,7 @@ $factFinderQueue->addSeedDataToExplore($factFinderSeed, $rootFactFinderName);
 // this is the fact-finding loop
 foreach ($factFinderQueue->iterateFactFinders() as list ($fact, $factFinder)) {
 	echo "Finding facts: " . get_class($factFinder) . PHP_EOL;
-	if ($fact instanceof SeedData) {
+	if ($fact instanceof Data) {
 		$factFinder->buildFactsFromData($fact, $factRepository, $factFinderQueue);
 	}
 	else if ($fact instanceof Fact) {
