@@ -41,7 +41,7 @@
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-namespace GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile\Builders;
+namespace GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile\FactBuilders;
 
 use GanbaroDigital\FactFinder\SeedDataTypes\FilesystemData;
 use GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile\ComposerJsonFileFact;
@@ -58,17 +58,14 @@ class ComposerJsonFileFactBuilder
 
 		// convert the contents to facts
 		$retval->setPathToFile($composerJsonFilename);
+		$retval->setRawJson($contents);
+
+		// everything below here is obsolete and needs removing
 		if (isset($contents->require)) {
 			$retval->setRequire($contents->require);
 		}
 		if (isset($contents->{'require-dev'})) {
 			$retval->setRequireDev($contents->{'require-dev'});
-		}
-		if (isset($contents->autoload, $contents->autoload->{'psr-0'})) {
-			$retval->setAutoloadPsr0($contents->autoload->{'psr-0'});
-		}
-		if (isset($contents->autoload, $contents->autoload->{'psr-4'})) {
-			$retval->setAutoloadPsr4($contents->autoload->{'psr-4'});
 		}
 		if (isset($contents->autoload, $contents->autoload->files)) {
 			$retval->setAutoloadFiles($contents->autoload->files);

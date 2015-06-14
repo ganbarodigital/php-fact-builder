@@ -34,23 +34,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/PsrFacts
+ * @package   FactFinder/ComposerFacts
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-namespace GanbaroDigital\FactFinder\PsrFacts\Psr0Folder;
+namespace GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile\Builders;
 
-use GanbaroDigital\FactFinder\DataFactFinder;
-use GanbaroDigital\FactFinder\FactFinderQueue;
-use GanbaroDigital\FactFinder\FactRepository;
-use GanbaroDigital\FactFinder\SeedData;
+use GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile\ComposerJsonFileFact;
 
-class DefinitionFactFinder implements DataFactFinder
+class PathToAutoloadFolder
 {
-	public function findFactsFromData(SeedData $data, FactRepository $factRepo, FactFinderQueue $factFinderQueue)
+	static public function fromComposerJsonFileFact(ComposerJsonFileFact $fact, $subFolder)
 	{
+		$projectRootFolder = dirname($fact->getPathToFile());
+		return $projectRootFolder . '/vendor/' . $subFolder;
 	}
 }

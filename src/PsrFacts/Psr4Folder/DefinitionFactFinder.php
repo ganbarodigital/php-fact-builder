@@ -43,12 +43,14 @@
 
 namespace GanbaroDigital\FactFinder\PsrFacts\Psr4Folder;
 
-use GanbaroDigital\FactFinder\FactFinder;
+use GanbaroDigital\FactFinder\DataFactFinder;
+use GanbaroDigital\FactFinder\FactFinderQueue;
+use GanbaroDigital\FactFinder\FactRepository;
+use GanbaroDigital\FactFinder\SeedData;
 
-class DefinitionFactFinder implements FactFinder
+class DefinitionFactFinder implements DataFactFinder
 {
-	public function getDependencies()
+	public function findFactsFromData(SeedData $data, FactRepository $factRepo, FactFinderQueue $factFinderQueue)
 	{
-		return [];
 	}
 }

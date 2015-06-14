@@ -49,11 +49,8 @@ use GanbaroDigital\FactFinder\FactFinderQueue;
 use GanbaroDigital\FactFinder\FactRepository;
 use GanbaroDigital\FactFinder\SeedData;
 use GanbaroDigital\FactFinder\SeedDataTypes\FilesystemData;
-use GanbaroDigital\FactFinder\ComposerFacts;
-use GanbaroDigital\FactFinder\Relationships\DefinedIn;
 
-use GanbaroDigital\FactFinder\ComposerFacts\ComposerProject\ComposerProjectFact;
-use GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile\Builders\ComposerJsonFileFactBuilder;
+use GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile\FactBuilders;
 
 class DefinitionFactFinder implements DataFactFinder
 {
@@ -68,19 +65,16 @@ class DefinitionFactFinder implements DataFactFinder
 	{
 		switch (get_class($data)) {
 			case FilesystemData::class:
-				$composerJsonFileFact = ComposerJsonFileFactBuilder::fromFilesystemData($data);
+				// create our new fact
+				$composerJsonFileFact = FactBuilders\ComposerJsonFileFactBuilder::fromFilesystemData($data);
+
+				// now, run our collection of fact builders to exact more
+				// meaning from this fact's raw data
+				FactBuilders\AutoloadPsr0FactBuilder::fromComposerJsonFileFact($composerJsonFileFact, $factFinderQueue);
+				FactBuilders\AutoloadPsr4FactBuilder::fromComposerJsonFileFact($composerJsonFileFact, $factFinderQueue);
 
 				// we need to add this fact into the repository
 				$factRepo->addFact($composerJsonFileFact);
-
-				// we also want to attach it to the composer project
-				// $rel1 = new DefinedIn($composerJsonFileFact, $composerProjectFact);
-				// $factRepo->addRelationship($rel1);
-
-				// at this point, we want to explore the project's source code
-
-				// we also want to explore all of the packages that this project
-				// depends upon
 				break;
 		}
 	}

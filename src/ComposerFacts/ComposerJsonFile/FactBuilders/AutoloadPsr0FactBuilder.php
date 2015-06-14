@@ -34,23 +34,39 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/PsrFacts
+ * @package   FactFinder/ComposerFacts
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-namespace GanbaroDigital\FactFinder\PsrFacts\Psr0Folder;
+namespace GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile\FactBuilders;
 
-use GanbaroDigital\FactFinder\DataFactFinder;
 use GanbaroDigital\FactFinder\FactFinderQueue;
-use GanbaroDigital\FactFinder\FactRepository;
-use GanbaroDigital\FactFinder\SeedData;
+use GanbaroDigital\FactFinder\SeedDataTypes\NamespaceData;
+use GanbaroDigital\FactFinder\PsrFacts;
 
-class DefinitionFactFinder implements DataFactFinder
+use GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile\ComposerJsonFileFact;
+use GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile\Builders\PathToAutoloadFolder;
+
+class AutoloadPsr0FactBuilder
 {
-	public function findFactsFromData(SeedData $data, FactRepository $factRepo, FactFinderQueue $factFinderQueue)
+	static public function fromComposerJsonFileFact(ComposerJsonFileFact $fact, FactFinderQueue $factFinderQueue)
 	{
+		// we are going to expand on the raw JSON data
+		$composerJson = $fact->getRawJson();
+
+		// do we have anything to do?
+		if (!(isset($composerJson->autoload, $composerJson->autoload->{'psr-0'}))) {
+			return;
+		}
+
+		// at this point, yes we do
+		foreach ($composerJson->autoload->{'psr-0'} as $namespace => $subFolder) {
+			$projectFolder = PathToAutoloadFolder::fromComposerJsonFileFact($fact, $subFolder);
+			$seedData = new NamespaceData($namespace, $projectFolder, 'psr0');
+			$factFinderQueue->addSeedDataToExplore($seedData, PsrFacts\Psr0Folder\DefinitionFactFinder::class);
+		}
 	}
 }

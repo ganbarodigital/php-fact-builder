@@ -49,6 +49,8 @@ use GanbaroDigital\FactFinder\FactTypes\InMemoryFact;
 /**
  * string getPathToFile()
  * void   setPathToFile(string)
+ * object getRawJson()
+ * void   setRawJson(object)
  * array  getRequire()
  * void   setRequire(array)
  * array  getRequireDev()
