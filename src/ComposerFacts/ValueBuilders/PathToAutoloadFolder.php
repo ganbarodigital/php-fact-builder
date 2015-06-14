@@ -50,6 +50,6 @@ class PathToAutoloadFolder
 	static public function fromComposerJsonFileFact(ComposerJsonFileFact $fact, $subFolder)
 	{
 		$projectRootFolder = dirname($fact->getPathToFile());
-		return $projectRootFolder . '/vendor/' . $subFolder;
+		return $projectRootFolder . '/' . $subFolder;
 	}
 }
