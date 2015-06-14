@@ -57,5 +57,5 @@ interface FilesystemCheck
 	 *         TRUE if the filesystem data meets the requirements
 	 *         FALSE otherwise
 	 */
-	public function isSatisfiedBy(FilesystemData $fsData);
+	static public function isSatisfiedBy(FilesystemData $fsData);
 }

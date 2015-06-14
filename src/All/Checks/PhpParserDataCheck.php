@@ -57,5 +57,5 @@ interface PhpParserCheck
 	 *         TRUE if the PHP Parser data meets the requirements
 	 *         FALSE otherwise
 	 */
-	public function isSatisfiedBy(PhpParserData $parserData);
+	static public function isSatisfiedBy(PhpParserData $parserData);
 }

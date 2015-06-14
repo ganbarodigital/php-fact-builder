@@ -96,16 +96,14 @@ class FactBuilder implements DataFactBuilder
 
 	protected function requireIsComposerProject(FilesystemData $rootData)
 	{
-		$spec = new HasAComposerJsonFile($rootData);
-		if (!$spec->isSatisfiedBy($rootData)) {
+		if (!HasAComposerJsonFile::isSatisfiedBy($rootData)) {
 			throw new E4xx_NotAComposerProject($rootData);
 		}
 	}
 
 	protected function requireComposerFileIsValidJson($composerJsonFilename)
 	{
-		$spec = new IsValidJsonFile($composerJsonFilename);
-		if (!$spec->isSatisfiedBy($composerJsonFilename)) {
+		if (!IsValidJsonFile::isSatisfiedBy($composerJsonFilename)) {
 			throw new E4xx_ComposerJsonIsNotValid($composerJsonFilename);
 		}
 	}

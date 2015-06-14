@@ -56,7 +56,7 @@ class IsValidJsonFile
 	 *         TRUE if the file is valid JSON
 	 *         FALSE otherwise
 	 */
-	public function isSatisfiedBy($filename)
+	static public function isSatisfiedBy($filename)
 	{
 		if (!is_file($filename)) {
 			return false;

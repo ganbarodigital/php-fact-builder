@@ -50,7 +50,7 @@ use GanbaroDigital\FactFinder\ComposerFacts\ValueBuilders\ComposerJsonFilePathBu
 
 class HasAComposerJsonFile implements FilesystemCheck
 {
-	public function isSatisfiedBy(FilesystemData $fsData)
+	static public function isSatisfiedBy(FilesystemData $fsData)
 	{
 		$folderPath = $fsData->getFileOrFolderPath();
 		if (!is_dir($folderPath)) {
