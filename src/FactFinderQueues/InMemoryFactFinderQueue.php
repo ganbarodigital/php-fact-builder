@@ -55,11 +55,26 @@ class InMemoryFactFinderQueue implements FactFinderQueue
 		$this->factFinders[] = [ $fact, $factFinderClasses ];
 	}
 
+	public function addSeedDataToExplore(SeedData $data, $factFinderClass)
+	{
+		$this->factFinders[] = [ $data, [$factFinderClass] ];
+	}
+
 	public function iterateFactFinders()
 	{
-		foreach ($this->factFinders as $nextGroup) {
-			$nextFactToFindFrom = $nextGroup[0];
-			$finderClasses      = $nextGroup[1];
+		// we keep going until we run out of fact finders
+		//
+		// we cannot use a foreach() loop here, as foreach() does not notice
+		// when we add new things to the end of the factFinders list
+		while (true) {
+			$nextGroup = each($this->factFinders);
+			if (!is_array($nextGroup)) {
+				// we're done here
+				return;
+			}
+
+			$nextFactToFindFrom = $nextGroup[1][0];
+			$finderClasses      = $nextGroup[1][1];
 
 			foreach ($finderClasses as $nextFactFinderClass) {
 				if (!class_exists($nextFactFinderClass)) {
