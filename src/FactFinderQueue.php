@@ -1,4 +1,3 @@
-#!/usr/bin/env php
 <?php
 
 /**
@@ -35,52 +34,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/Cli
+ * @package   FactFinder/Interfaces
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-use GanbaroDigital\FactFinder\RootFactFinder;
-use GanbaroDigital\FactFinder\SeedDataTypes\FilesystemData;
-use GanbaroDigital\FactFinder\FactRepositories\InMemoryFactRepository;
-use GanbaroDigital\FactFinder\FactFinderQueues\InMemoryFactFinderQueue;
+namespace GanbaroDigital\FactFinder;
 
-// temporary
-require_once (__DIR__ . '/../vendor/autoload.php');
+interface FactFinderQueue
+{
 
-// first argument is the 'root' fact to start from
-$rootFactName = $argv[1];
-
-// second argument is the starting point to seed the 'root' fact with
-$rootFactSeed = $argv[2];
-
-// do we have a fact finder that we can use here?
-$rootFactFinderName = $rootFactName . '\DefinitionFactFinder';
-if (!class_exists($rootFactFinderName)) {
-	die("Cannot find root fact finder class '{$rootFactFinderName}" . PHP_EOL);
 }
-$rootFactFinder = new $rootFactFinderName();
-if (!$rootFactFinder instanceof RootFactFinder) {
-	die("class '{$rootFactFinderName}' does not support being a 'root' for fact finding" . PHP_EOL);
-}
-
-// we need something to store the facts in
-$factRepository = new InMemoryFactRepository();
-
-// we need something to keep track of where we should look next
-$factFinderQueue = new InMemoryFactFinderQueue();
-
-// alright, let's see where this takes us
-$factFinderSeed = new FilesystemData($rootFactSeed);
-$rootFactFinder->findFactsFromRoot($factFinderSeed, $factRepository, $factFinderQueue);
-
-// hopefully, our root fact has given us at least one more fact finder to use
-foreach ($factFinderQueue->iterateFactFinders() as $factFinder) {
-	echo "Finding facts: " . get_class($factFinder) . PHP_EOL;
-	$factFinder->findFactsFromFacts($factRepository, $factFinderQueue);
-}
-
-// to make it easier to inspect, dump the facts as JSON
-echo json_encode($factRepository->getFacts(), JSON_PRETTY_PRINT) . PHP_EOL;

@@ -59,4 +59,18 @@ class InMemoryFactRepository implements FactRepository
 	{
 		return $this->facts;
 	}
+
+	public function getTheseFacts(array $factsToMatch)
+	{
+		$retval = [];
+
+		foreach ($this->facts as $factType => $factsOfType) {
+			if (in_array($factType, $factsToMatch)) {
+				$retval = $retval + $factsOfType;
+			}
+		}
+
+		// all done
+		return $retval;
+	}
 }
