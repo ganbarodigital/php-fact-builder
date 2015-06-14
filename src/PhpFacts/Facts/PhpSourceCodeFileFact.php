@@ -41,17 +41,15 @@
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-namespace GanbaroDigital\FactFinder\PhpFacts\PhpSourceCodeFile;
+namespace GanbaroDigital\FactFinder\PhpFacts\Facts;
 
-use GanbaroDigital\FactFinder\FactFinder;
-use GanbaroDigital\FactFinder\PhpFacts;
+use GanbaroDigital\FactFinder\DefinitionFact;
+use GanbaroDigital\FactFinder\FactTypes\InMemoryFact;
 
-class DefinitionFactFinder implements FactFinder
+/**
+ * string getPathToFile()
+ * void   setPathToFile(string)
+ */
+class PhpSourceCodeFileFact extends InMemoryFact implements DefinitionFact
 {
-	public function getDependencies()
-	{
-		return [
-			PhpFacts\PhpSourceCodeFolder\DefinitionFactFinder::class,
-		];
-	}
 }
