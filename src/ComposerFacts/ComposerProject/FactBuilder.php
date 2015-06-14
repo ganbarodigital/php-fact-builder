@@ -79,7 +79,7 @@ class FactBuilder implements DataFactBuilder
 
 		// at this point, we have something that is valid JSON, but that's
 		// all we know about it
-		$composerProjectFact = new ComposerProjectFact();
+		$composerProjectFact = new ComposerFacts\Facts\ComposerProjectFact();
 		$composerProjectFact->setPathToFolder(dirname($composerJsonFilename));
 		$composerProjectFact->setHasComposerJson(true);
 

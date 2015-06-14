@@ -41,27 +41,17 @@
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-namespace GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile;
+namespace GanbaroDigital\FactFinder\ComposerFacts\Facts;
 
 use GanbaroDigital\FactFinder\DefinitionFact;
 use GanbaroDigital\FactFinder\FactTypes\InMemoryFact;
 
 /**
- * string getPathToFile()
- * void   setPathToFile(string)
- * object getRawJson()
- * void   setRawJson(object)
- * array  getRequire()
- * void   setRequire(array)
- * array  getRequireDev()
- * void   setRequireDev(array)
- * array  getAutoloadPsr0()
- * void   setAutoloadPsr0(array)
- * array  getAutoloadPsr4()
- * void   setAutoloadPsr4(array)
- * array  getAutoloadFiles()
- * void   setAutoloadFiles(array)
+ * @method string getPathToFolder()
+ * @method void   setPathToFolder(string $path)
+ * @method bool   getHasComposerJson()
+ * @method void   setHasComposerJson(bool $hasFile)
  */
-class ComposerJsonFileFact extends InMemoryFact implements DefinitionFact
+class ComposerProjectFact extends InMemoryFact implements DefinitionFact
 {
 }

@@ -43,7 +43,7 @@
 
 namespace GanbaroDigital\FactFinder\ComposerFacts\ValueBuilders;
 
-use GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile\ComposerJsonFileFact;
+use GanbaroDigital\FactFinder\ComposerFacts\Facts\ComposerJsonFileFact;
 
 class PathToAutoloadFolder
 {

@@ -48,8 +48,7 @@ use GanbaroDigital\FactFinder\SeedDataTypes\NamespaceData;
 use GanbaroDigital\FactFinder\ComposerFacts;
 use GanbaroDigital\FactFinder\PsrFacts;
 
-use GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile\ComposerJsonFileFact;
-use GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile\ValueBuilders\PathToAutoloadFolder;
+use GanbaroDigital\FactFinder\ComposerFacts\Facts\ComposerJsonFileFact;
 
 class AutoloadPsr0FactBuilder
 {
