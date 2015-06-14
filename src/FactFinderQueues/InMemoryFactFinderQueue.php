@@ -44,28 +44,31 @@
 namespace GanbaroDigital\FactFinder\FactFinderQueues;
 
 use GanbaroDigital\FactFinder\FactFinderQueue;
+use GanbaroDigital\FactFinder\Fact;
 
 class InMemoryFactFinderQueue implements FactFinderQueue
 {
 	protected $factFinders = [];
 
-	public function addFactFinder($factFinderClass)
+	public function addFactFinder(Fact $fact, $factFinderClasses)
 	{
-		// do not run a fact finder more than once
-		if (!in_array($factFinderClass, $this->factFinders)) {
-			$this->factFinders[] = $factFinderClass;
-		}
+		$this->factFinders[] = [ $fact, $factFinderClasses ];
 	}
 
 	public function iterateFactFinders()
 	{
-		foreach ($this->factFinders as $nextFindFinderClass) {
-			if (!class_exists($nextFindFinderClass)) {
-				throw new E4xx_FactFinderNotFound($nextFindFinderClass);
-			}
+		foreach ($this->factFinders as $nextGroup) {
+			$nextFactToFindFrom = $nextGroup[0];
+			$finderClasses      = $nextGroup[1];
 
-			$nextFactFinder = new $nextFindFinderClass;
-			yield($nextFactFinder);
+			foreach ($finderClasses as $nextFactFinderClass) {
+				if (!class_exists($nextFactFinderClass)) {
+					throw new E4xx_FactFinderNotFound($nextFactFinderClass);
+				}
+
+				$nextFactFinder = new $nextFactFinderClass;
+				yield([$nextFactToFindFrom, $nextFactFinder]);
+			}
 		}
 	}
 }

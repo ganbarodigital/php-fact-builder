@@ -77,9 +77,9 @@ $factFinderSeed = new FilesystemData($rootFactSeed);
 $rootFactFinder->findFactsFromRoot($factFinderSeed, $factRepository, $factFinderQueue);
 
 // hopefully, our root fact has given us at least one more fact finder to use
-foreach ($factFinderQueue->iterateFactFinders() as $factFinder) {
+foreach ($factFinderQueue->iterateFactFinders() as list ($fact, $factFinder)) {
 	echo "Finding facts: " . get_class($factFinder) . PHP_EOL;
-	$factFinder->findFactsFromFacts($factRepository, $factFinderQueue);
+	$factFinder->findFactsFromFact($fact, $factRepository, $factFinderQueue);
 }
 
 // to make it easier to inspect, dump the facts as JSON

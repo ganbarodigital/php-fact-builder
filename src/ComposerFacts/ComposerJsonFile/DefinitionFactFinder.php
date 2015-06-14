@@ -43,6 +43,7 @@
 
 namespace GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile;
 
+use GanbaroDigital\FactFinder\Fact;
 use GanbaroDigital\FactFinder\FactFinder;
 use GanbaroDigital\FactFinder\FactFinderQueue;
 use GanbaroDigital\FactFinder\FactRepository;
@@ -61,25 +62,24 @@ class DefinitionFactFinder implements FactFinder
 		];
 	}
 
-	public function findFactsFromFacts(FactRepository $factRepo, FactFinderQueue $factFinderQueue)
+	public function findFactsFromFact(Fact $fact, FactRepository $factRepo, FactFinderQueue $factFinderQueue)
 	{
-		// we're interested in any composer projects that might or might
-		// not exist
-		foreach ($factRepo->getTheseFacts([ComposerProjectFact::class]) as $composerProjectFact)
-		{
-			$composerJsonFileFact = $this->buildComposerJsonFact($composerProjectFact);
+		switch (get_class($fact)) {
+			case ComposerProjectFact::class:
+				$composerJsonFileFact = $this->buildComposerJsonFact($fact);
 
-			// we need to add this fact into the repository
-			$factRepo->addFact($composerJsonFileFact);
+				// we need to add this fact into the repository
+				$factRepo->addFact($composerJsonFileFact);
 
-			// we also want to attach it to the composer project
-			// $rel1 = new DefinedIn($composerJsonFileFact, $composerProjectFact);
-			// $factRepo->addRelationship($rel1);
+				// we also want to attach it to the composer project
+				// $rel1 = new DefinedIn($composerJsonFileFact, $composerProjectFact);
+				// $factRepo->addRelationship($rel1);
 
-			// at this point, we want to explore the project's source code
+				// at this point, we want to explore the project's source code
 
-			// we also want to explore all of the packages that this project
-			// depends upon
+				// we also want to explore all of the packages that this project
+				// depends upon
+				break;
 		}
 	}
 
@@ -87,4 +87,5 @@ class DefinitionFactFinder implements FactFinder
 	{
 		return ComposerJsonFileFactBuilder::fromComposerProjectFact($composerProjectFact);
 	}
+
 }

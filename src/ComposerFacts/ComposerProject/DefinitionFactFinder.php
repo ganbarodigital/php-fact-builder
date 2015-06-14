@@ -43,6 +43,7 @@
 
 namespace GanbaroDigital\FactFinder\ComposerFacts\ComposerProject;
 
+use GanbaroDigital\FactFinder\Fact;
 use GanbaroDigital\FactFinder\FactFinderQueue;
 use GanbaroDigital\FactFinder\FactRepository;
 use GanbaroDigital\FactFinder\RootFactFinder;
@@ -87,12 +88,14 @@ class DefinitionFactFinder implements RootFactFinder
 		$factRepo->addFact($composerProjectFact);
 
 		// trigger the next set of facts to explore
-		$factFinderQueue->addFactFinder(ComposerJsonFile\DefinitionFactFinder::class);
+		$factFinderQueue->addFactFinder($composerProjectFact, [
+			ComposerJsonFile\DefinitionFactFinder::class
+		]);
 
 		// all done
 	}
 
-	public function findFactsFromFacts(FactRepository $factsRepository, FactFinderQueue $factFinderQueue)
+	public function findFactsFromFact(Fact $fact, FactRepository $factsRepository, FactFinderQueue $factFinderQueue)
 	{
 		//
 	}

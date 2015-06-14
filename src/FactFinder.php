@@ -45,5 +45,5 @@ namespace GanbaroDigital\FactFinder;
 
 interface FactFinder
 {
-	public function findFactsFromFacts(FactRepository $factsRepo, FactFinderQueue $factFinderQueue);
+	public function findFactsFromFact(Fact $fact, FactRepository $factsRepo, FactFinderQueue $factFinderQueue);
 }
