@@ -52,5 +52,18 @@ class FactBuilder implements DataFactBuilder
 {
 	public function buildFactsFromData(Data $data, FactRepository $factRepo, FactBuilderQueue $factBuilderQueue)
 	{
+		switch (get_class($data)) {
+			case NamespaceData::class:
+				$path      = $data->getFolder();
+				$namespace = $data->getNamespace();
+
+				$data = new FilesystemData($path);
+				$phpFiles = PsrFacts\ValueBuilders\FolderToPhpSourceFiles::fromFilesystemData($data);
+
+				foreach ($phpFiles as $phpFile) {
+					$data = new PhpFileData($phpFile, $namespace);
+					$factBuilderQueue->addSeedDataToExplore($data, PhpFacts\PhpSourceCodeFile\FactBuilder::class);
+				}
+				break;
 	}
 }
