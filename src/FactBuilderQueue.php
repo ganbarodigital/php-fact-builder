@@ -45,5 +45,7 @@ namespace GanbaroDigital\FactFinder;
 
 interface FactBuilderQueue
 {
-
+	public function addDataToExplore(Data $data);
+	public function addFactToExplore(Fact $fact);
+	public function iterateFromQueue();
 }
