@@ -49,16 +49,16 @@ use GanbaroDigital\FactFinder\All\Data;
 
 class InMemoryFactBuilderQueue implements FactBuilderQueue
 {
-	protected $factFinders = [];
+	protected $exploreQueue = [];
 
-	public function addFactFinder(Fact $fact, $factFinderClasses)
+	public function addFactToExplore(Fact $fact)
 	{
-		$this->factFinders[] = [ $fact, $factFinderClasses ];
+		$this->exploreQueue[] = $fact;
 	}
 
-	public function addSeedDataToExplore(Data $data, $factFinderClass)
+	public function addDataToExplore(Data $data)
 	{
-		$this->factFinders[] = [ $data, [$factFinderClass] ];
+		$this->exploreQueue[] = $data;
 	}
 
 	public function iterateFactFinders()
