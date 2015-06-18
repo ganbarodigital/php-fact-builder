@@ -61,30 +61,21 @@ class InMemoryFactBuilderQueue implements FactBuilderQueue
 		$this->exploreQueue[] = $data;
 	}
 
-	public function iterateFactFinders()
+	public function iterateFromQueue()
 	{
-		// we keep going until we run out of fact finders
+		// we keep going until we run out of facts / data
 		//
 		// we cannot use a foreach() loop here, as foreach() does not notice
 		// when we add new things to the end of the factFinders list
 		while (true) {
-			$nextGroup = each($this->factFinders);
+			$nextGroup = each($this->exploreQueue);
 			if (!is_array($nextGroup)) {
 				// we're done here
 				return;
 			}
 
-			$nextFactToFindFrom = $nextGroup[1][0];
-			$finderClasses      = $nextGroup[1][1];
-
-			foreach ($finderClasses as $nextFactFinderClass) {
-				if (!class_exists($nextFactFinderClass)) {
-					throw new E4xx_FactFinderNotFound($nextFactFinderClass);
-				}
-
-				$nextFactFinder = new $nextFactFinderClass;
-				yield([$nextFactToFindFrom, $nextFactFinder]);
-			}
+			$nextItem = $nextGroup[1];
+			yield($nextItem);
 		}
 	}
 }
