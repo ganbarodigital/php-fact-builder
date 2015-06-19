@@ -51,6 +51,8 @@ use GanbaroDigital\FactFinder\FactTypes\InMemoryFact;
  * @method void   setPathToFolder(string $path)
  * @method bool   getHasComposerJson()
  * @method void   setHasComposerJson(bool $hasFile)
+ * @method string getComposerJsonFilename()
+ * @method void   setComposerJsonFilename(string $filename)
  */
 class ComposerProjectFact extends InMemoryFact implements DefinitionFact
 {
