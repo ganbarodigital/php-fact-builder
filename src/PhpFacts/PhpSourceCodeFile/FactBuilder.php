@@ -61,6 +61,9 @@ class FactBuilder implements DataFactBuilder
 				$fact = FactBuilders\PhpSourceCodeFileFactBuilder::fromPhpFileData($data);
 
 				$factRepo->addFact($fact);
+
+				// now, we want to know what is in this file
+				$factBuilderQueue->addFactToExplore($fact);
 				break;
 		}
 	}
