@@ -34,28 +34,49 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/Checks
+ * @package   FactFinder/AllFacts
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-namespace GanbaroDigital\FactFinder\All\Checks;
+namespace GanbaroDigital\FactFinder\AllFacts\ValueBuilders;
 
-use GanbaroDigital\FactFinder\All\DataTypes\PhpParserData;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use RecursiveRegexIterator;
+use RegexIterator;
 
-interface PhpParserCheck
+use GanbaroDigital\FactFinder\AllFacts\Checks\IsFolderCheck;
+use GanbaroDigital\FactFinder\Core\DataTypes\FilesystemData;
+
+class FolderToMatchingFiles
 {
-	/**
-	 * does the provided PHP Parser data meet the requirements for this
-	 * check?
-	 *
-	 * @param  PhpParserData $parserData
-	 *         the data to inspect
-	 * @return boolean
-	 *         TRUE if the PHP Parser data meets the requirements
-	 *         FALSE otherwise
-	 */
-	static public function isSatisfiedBy(PhpParserData $parserData);
+	static public function fromFilesystemData(FilesystemData $fsData, $pattern = ".+")
+	{
+		// make sure we have a folder
+		if (!IsFolderCheck::isSatisfiedBy($fsData)) {
+			return [];
+		}
+
+		// at this point, we are happy that we have a folder
+		$directory = $fsData->getFileOrFolderPath();
+
+        $dirIter = new RecursiveDirectoryIterator($directory);
+        $recIter = new RecursiveIteratorIterator($dirIter);
+        $regIter = new RegexIterator($recIter, '|^.+' . $pattern . '$|i', RegexIterator::GET_MATCH);
+
+        // what happened?
+        $filenames = [];
+        foreach ($regIter as $match) {
+            $filenames[] = $match[0];
+        }
+
+        // let's get the list into some semblance of order
+        sort($filenames);
+
+        // all done
+        return $filenames;
+	}
 }
