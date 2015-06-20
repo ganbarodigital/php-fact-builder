@@ -34,80 +34,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/FactTypes
+ * @package   FactFinder/Core
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-namespace GanbaroDigital\FactFinder\FactTypes;
+namespace GanbaroDigital\FactFinder\Core\Relationships;
 
-class InMemoryFact
+use GanboarDigital\FactFinder\Core\Relationship;
+
+class Calls extends Relationship
 {
-	/**
-	 * the information we have about this fact
-	 * @var array
-	 */
-	public $info = [];
 
-	/**
-	 * retrieve a single piece of information about this fact
-	 *
-	 * @param  string $key
-	 *         the information to retrieve
-	 * @return mixed
-	 *         the information found
-	 */
-	public function getInfo($key)
-	{
-		if (array_key_exists($key, $this->info)) {
-			return $this->info[$key];
-		}
-
-		// if we get here, we do not know anything
-		return null;
-	}
-
-	/**
-	 * store some information about this fact
-	 *
-	 * @param string $key
-	 *        the name of this information
-	 * @param mixed $value
-	 *        the information to store
-	 */
-	public function setInfo($key, $value)
-	{
-		$this->info[$key] = $value;
-	}
-
-	public function __call($methodName, $args)
-	{
-		list($verb, $infoName) = $this->convertMethodName($methodName);
-
-		switch ($verb) {
-			case 'get':
-				return $this->getInfo($infoName);
-			case 'set':
-				return $this->setInfo($infoName, $args[0]);
-			default:
-				die("unsupported method '{$methodName}'");
-		}
-	}
-
-	protected function convertMethodName($methodName)
-	{
-        // turn the method name into an array of words
-        $words = explode(' ', strtolower(preg_replace('/([^A-Z])([A-Z])/', "$1 $2", $methodName)));
-
-        // lose the first word
-        $verb = array_shift($words);
-
-        // concat into underscore_format
-        $retval = implode("_", $words);
-
-        // all done
-        return [$verb, $retval];
-	}
 }

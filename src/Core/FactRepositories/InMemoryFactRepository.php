@@ -34,15 +34,43 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/Interfaces
+ * @package   FactFinder/Core
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-namespace GanbaroDigital\FactFinder;
+namespace GanbaroDigital\FactFinder\Core\FactRepositories;
 
-interface FactBuilder
+use GanbaroDigital\FactFinder\Core\FactRepository;
+
+class InMemoryFactRepository implements FactRepository
 {
+	protected $facts = [];
+
+	public function addFact($fact)
+	{
+		$factType = get_class($fact);
+		$this->facts[$factType][] = $fact;
+	}
+
+	public function getFacts()
+	{
+		return $this->facts;
+	}
+
+	public function getTheseFacts(array $factsToMatch)
+	{
+		$retval = [];
+
+		foreach ($this->facts as $factType => $factsOfType) {
+			if (in_array($factType, $factsToMatch)) {
+				$retval = $retval + $factsOfType;
+			}
+		}
+
+		// all done
+		return $retval;
+	}
 }

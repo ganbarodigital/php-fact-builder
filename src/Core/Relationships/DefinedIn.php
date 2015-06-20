@@ -41,11 +41,11 @@
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-namespace GanbaroDigital\FactFinder\Relationships;
+namespace GanbaroDigital\FactFinder\Core\Relationships;
 
-use GanboarDigital\FactFinder\Relationship;
+use GanboarDigital\FactFinder\Core\Relationship;
 
-class IsA extends Relationship
+class DefinedIn extends Relationship
 {
 
 }

@@ -34,48 +34,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/FactFinderQueues
+ * @package   FactFinder/Relationships
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-namespace GanbaroDigital\FactFinder\FactBuilderQueues;
+namespace GanbaroDigital\FactFinder\Core\Relationships;
 
-use GanbaroDigital\FactFinder\Fact;
-use GanbaroDigital\FactFinder\FactBuilderQueue;
-use GanbaroDigital\FactFinder\All\Data;
+use GanboarDigital\FactFinder\Core\Relationship;
 
-class InMemoryFactBuilderQueue implements FactBuilderQueue
+class DependsUpon extends Relationship
 {
-	protected $exploreQueue = [];
 
-	public function addFactToExplore(Fact $fact)
-	{
-		$this->exploreQueue[] = $fact;
-	}
-
-	public function addDataToExplore(Data $data)
-	{
-		$this->exploreQueue[] = $data;
-	}
-
-	public function iterateFromQueue()
-	{
-		// we keep going until we run out of facts / data
-		//
-		// we cannot use a foreach() loop here, as foreach() does not notice
-		// when we add new things to the end of the factFinders list
-		while (true) {
-			$nextGroup = each($this->exploreQueue);
-			if (!is_array($nextGroup)) {
-				// we're done here
-				return;
-			}
-
-			$nextItem = $nextGroup[1];
-			yield($nextItem);
-		}
-	}
 }
