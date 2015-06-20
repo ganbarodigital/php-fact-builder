@@ -41,28 +41,10 @@
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-namespace GanbaroDigital\FactFinder\All\DataTypes;
+namespace GanbaroDigital\FactFinder\Core\DataTypes;
 
-use GanbaroDigital\FactFinder\All\Data;
+use GanbaroDigital\FactFinder\Core\Data;
 
-class PhpFileData implements Data
+class PhpParserData implements Data
 {
-	protected $pathToFile;
-	protected $namespace;
-
-	public function __construct($pathToFile, $namespace = null)
-	{
-		$this->pathToFile = $pathToFile;
-		$this->namespace  = $namespace;
-	}
-
-	public function getPathToFile()
-	{
-		return $this->pathToFile;
-	}
-
-	public function getNamespace()
-	{
-		return $this->namespace;
-	}
 }

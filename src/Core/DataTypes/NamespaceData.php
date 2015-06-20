@@ -34,51 +34,33 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/All
+ * @package   FactFinder/Core
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-namespace GanbaroDigital\FactFinder\All\DataTypes;
+namespace GanbaroDigital\FactFinder\Core\DataTypes;
 
-use GanbaroDigital\FactFinder\All\Data;
+use GanbaroDigital\FactFinder\Core\Data;
 
-class FilesystemData implements Data
+class NamespaceData implements Data
 {
-	/**
-	 * path to either a file or folder to examine
-	 *
-	 * @var string
-	 */
-	protected $fileOrFolderPath;
-
-	public function __construct($fileOrFolderPath)
+	public function __construct($namespace, $folder, $autoloadScheme)
 	{
-		$this->setFileOrFolderPath($fileOrFolderPath);
+		$this->namespace      = $namespace;
+		$this->folder         = $folder;
+		$this->autoloadScheme = $autoloadScheme;
 	}
 
-	/**
-	 * which file or folder are we wrapping?
-	 *
-	 * @return string
-	 */
-	public function getFileOrFolderPath()
+	public function getFolder()
 	{
-	    return $this->fileOrFolderPath;
+		return $this->folder;
 	}
 
-	/**
-	 * tell us which file or folder we are representing
-	 *
-	 * @param  string $fileOrFolderPath
-	 * @return void
-	 */
-	public function setFileOrFolderPath($fileOrFolderPath)
+	public function getNamespace()
 	{
-	    $this->fileOrFolderPath = $fileOrFolderPath;
-
-	    return $this;
+		return $this->namespace;
 	}
 }
