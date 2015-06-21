@@ -124,7 +124,7 @@ foreach ($factFinderQueue->iterateFromQueue() as $item) {
 			$factRepository->addFact($fact);
 
 			// these new facts will need exploring
-			$factFinderQueue->addFactToExplore($fact);
+			$factFinderQueue->addItemToExplore($fact);
 		}
 	}
 }

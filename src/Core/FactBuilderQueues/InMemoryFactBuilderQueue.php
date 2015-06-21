@@ -51,6 +51,19 @@ class InMemoryFactBuilderQueue implements FactBuilderQueue
 {
 	protected $exploreQueue = [];
 
+	public function addItemToExplore($item)
+	{
+		if ($item instanceof Fact) {
+			$this->addFactToExplore($item);
+		}
+		else if ($item instanceof Data) {
+			$this->addDataToExplore($item);
+		}
+		else {
+			throw new \Exception("Unsupported item type " . get_class($item));
+		}
+	}
+
 	public function addFactToExplore(Fact $fact)
 	{
 		$this->exploreQueue[] = $fact;
