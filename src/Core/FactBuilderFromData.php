@@ -43,7 +43,8 @@
 
 namespace GanbaroDigital\FactFinder\Core;
 
-interface DataFactBuilder extends FactBuilder
+interface FactBuilderFromData extends FactBuilder
 {
+	static public function getInterestsList();
 	public function buildFactsFromData(Data $data, FactRepository $factsRepo, FactBuilderQueue $factBuilderQueue);
 }
