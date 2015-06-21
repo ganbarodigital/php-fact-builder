@@ -43,18 +43,23 @@
 
 namespace GanbaroDigital\FactFinder\ComposerFacts\ComposerProject;
 
-use GanbaroDigital\FactFinder\Fact;
-use GanbaroDigital\FactFinder\FactBuilderQueue;
-use GanbaroDigital\FactFinder\FactRepository;
-use GanbaroDigital\FactFinder\DataFactBuilder;
-use GanbaroDigital\FactFinder\All;
-use GanbaroDigital\FactFinder\All\Data;
-use GanbaroDigital\FactFinder\All\DataTypes\FilesystemData;
+use GanbaroDigital\FactFinder\AllFacts;
+use GanbaroDigital\FactFinder\Core\Data;
+use GanbaroDigital\FactFinder\Core\DataTypes\FilesystemData;
+use GanbaroDigital\FactFinder\Core\Fact;
+use GanbaroDigital\FactFinder\Core\FactBuilderQueue;
+use GanbaroDigital\FactFinder\Core\FactRepository;
+use GanbaroDigital\FactFinder\Core\FactBuilderFromData;
 use GanbaroDigital\FactFinder\ComposerFacts;
 
-class FactBuilder implements DataFactBuilder
+class FactBuilder implements FactBuilderFromData
 {
-	public function getDependencies()
+	/**
+	 * return a list of the facts that we are interested in exploring
+	 *
+	 * @return array<string>
+	 */
+	static public function getInterestsList()
 	{
 		return [];
 	}
@@ -101,8 +106,8 @@ class FactBuilder implements DataFactBuilder
 
 	protected function requireComposerFileIsValidJson($composerJsonFilename)
 	{
-		if (!IsValidJsonFile::isSatisfiedBy($composerJsonFilename)) {
-			throw new All\Checks\E4xx_ComposerJsonIsNotValid($composerJsonFilename);
+		if (!AllFacts\Checks\IsValidJsonFile::isSatisfiedBy($composerJsonFilename)) {
+			throw new E4xx_ComposerJsonIsNotValid($composerJsonFilename);
 		}
 	}
 }

@@ -42,11 +42,18 @@
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-use GanbaroDigital\FactFinder\DataFactBuilder;
-use GanbaroDigital\FactFinder\All\Data;
-use GanbaroDigital\FactFinder\All\DataTypes\FilesystemData;
-use GanbaroDigital\FactFinder\FactRepositories\InMemoryFactRepository;
-use GanbaroDigital\FactFinder\FactBuilderQueues\InMemoryFactBuilderQueue;
+use GanbaroDigital\FactFinder\Core\Data;
+use GanbaroDigital\FactFinder\Core\DataTypes\FilesystemData;
+use GanbaroDigital\FactFinder\Core\FactRepositories\InMemoryFactRepository;
+use GanbaroDigital\FactFinder\Core\FactBuilderQueues\InMemoryFactBuilderQueue;
+use GanbaroDigital\FactFinder\Core\FactBuilding\InMemoryInterestsList;
+use GanbaroDigital\FactFinder\Core\FactBuilderFromData;
+
+// a list of the fact builders that we want to use
+// @TODO: find a way to make this discoverable in code
+use GanbaroDigital\FactFinder\ComposerFacts;
+use GanbaroDigital\FactFinder\PhpFacts;
+use GanbaroDigital\FactFinder\PsrFacts;
 
 // temporary
 require_once (__DIR__ . '/../vendor/autoload.php');
@@ -63,7 +70,7 @@ if (!class_exists($rootFactFinderName)) {
 	die("Cannot find root fact finder class '{$rootFactFinderName}" . PHP_EOL);
 }
 $rootFactFinder = new $rootFactFinderName();
-if (!$rootFactFinder instanceof DataFactBuilder) {
+if (!$rootFactFinder instanceof FactBuilderFromData) {
 	die("class '{$rootFactFinderName}' does not support being a 'root' for fact finding" . PHP_EOL);
 }
 
@@ -73,21 +80,37 @@ $factRepository = new InMemoryFactRepository();
 // we need something to keep track of where we should look next
 $factFinderQueue = new InMemoryFactBuilderQueue();
 
-// add our initial piece of seed data to the queue
+// we're going to seed the whole thing now
 $factFinderSeed = new FilesystemData($rootFactSeed);
-$factFinderQueue->addSeedDataToExplore($factFinderSeed, $rootFactFinderName);
+$rootFactFinder->buildFactsFromData($factFinderSeed, $factRepository, $factFinderQueue);
+
+// at this point, we (hopefully) have at least one fact in the queue to be
+// examined
+
+// let's build up the list of builders that are interested in facts
+$interestsList = new InMemoryInterestsList();
+$knownBuilderClasses = [
+	ComposerFacts\ComposerProject\FactBuilder::class,
+	ComposerFacts\ComposerJsonFile\FactBuilder::class
+];
+foreach($knownBuilderClasses as $knownBuilderClass) {
+	$interestsList->addInterestedBuilderClass($knownBuilderClass);
+}
 
 // this is the fact-finding loop
-foreach ($factFinderQueue->iterateFactFinders() as list ($fact, $factFinder)) {
-	echo "Finding facts: " . get_class($factFinder) . PHP_EOL;
-	if ($fact instanceof Data) {
-		$factFinder->buildFactsFromData($fact, $factRepository, $factFinderQueue);
-	}
-	else if ($fact instanceof Fact) {
-		$factFinder->findFactsFromFact($fact, $factRepository, $factFinderQueue);
-	}
-	else {
-		die("class '" . get_class($fact) . "' is unsupported in the fact finding loop" . PHP_EOL);
+foreach ($factFinderQueue->iterateFromQueue() as $item) {
+	echo "Exploring " . get_class($item) . ": " . json_encode($item) . PHP_EOL;
+	foreach ($interestsList->getBuildersInterestedIn(get_class($item)) as $factFinderClass) {
+		$factFinder = new $factFinderClass();
+		if ($item instanceof Data) {
+			$factFinder->buildFactsFromData($item, $factRepository, $factFinderQueue);
+		}
+		else if ($item instanceof Fact) {
+			$factFinder->buildFactsFromFact($item, $factRepository, $factFinderQueue);
+		}
+		else {
+			die("class '" . get_class($fact) . "' is unsupported in the fact finding loop" . PHP_EOL);
+		}
 	}
 }
 

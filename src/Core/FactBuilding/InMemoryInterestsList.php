@@ -34,34 +34,52 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/ComposerFacts
+ * @package   FactFinder/PhpFacts
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-namespace GanbaroDigital\FactFinder\ComposerFacts\Facts;
+namespace GanbaroDigital\FactFinder\Core\FactBuilding;
 
-use GanbaroDigital\FactFinder\Core\DefinitionFact;
-use GanbaroDigital\FactFinder\Core\FactTypes\InMemoryFact;
-
-/**
- * string getPathToFile()
- * void   setPathToFile(string)
- * object getRawJson()
- * void   setRawJson(object)
- * array  getRequire()
- * void   setRequire(array)
- * array  getRequireDev()
- * void   setRequireDev(array)
- * array  getAutoloadPsr0()
- * void   setAutoloadPsr0(array)
- * array  getAutoloadPsr4()
- * void   setAutoloadPsr4(array)
- * array  getAutoloadFiles()
- * void   setAutoloadFiles(array)
- */
-class ComposerJsonFileFact extends InMemoryFact implements DefinitionFact
+class InMemoryInterestsList
 {
+	/**
+	 * a list of which builders are interested in which facts
+	 * @var array<Fact,array<FactBuilderFromFact>>
+	 */
+	protected $interests = array();
+
+	/**
+	 * add a fact builder's interests to our lists
+	 *
+	 * @param string $className
+	 *        the name of the class which is interested in facts
+	 */
+	public function addInterestedBuilderClass($className)
+	{
+		$interests = $className::getInterestsList();
+		foreach ($interests as $factClass) {
+			$this->interests[$factClass][] = $className;
+		}
+	}
+
+	/**
+	 * return the list of builder classes interested in a given type of
+	 * fact or data
+	 *
+	 * @param  string $className
+	 *         the fact or data class of interest
+	 * @return array<FactBuilderFromFact|FactBuilderFromData>
+	 *         the list of classes that want to look at this type of fact
+	 */
+	public function getBuildersInterestedIn($className)
+	{
+		if (!isset($this->interests[$className])) {
+			return [];
+		}
+
+		return $this->interests[$className];
+	}
 }

@@ -43,27 +43,32 @@
 
 namespace GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile;
 
-use GanbaroDigital\FactFinder\Fact;
-use GanbaroDigital\FactFinder\DataFactBuilder;
-use GanbaroDigital\FactFinder\FactBuilderQueue;
-use GanbaroDigital\FactFinder\FactRepository;
-use GanbaroDigital\FactFinder\All\Data;
-use GanbaroDigital\FactFinder\All\DataTypes\FilesystemData;
+use GanbaroDigital\FactFinder\Core\Data;
+use GanbaroDigital\FactFinder\Core\Fact;
+use GanbaroDigital\FactFinder\Core\FactBuilderFromData;
+use GanbaroDigital\FactFinder\Core\FactBuilderFromFacts;
+use GanbaroDigital\FactFinder\Core\FactBuilderQueue;
+use GanbaroDigital\FactFinder\Core\FactRepository;
 
-use GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile\FactBuilders;
+use GanbaroDigital\FactFinder\ComposerFacts;
 
-class FactBuilder implements DataFactBuilder
+class FactBuilder implements FactBuilderFromData, FactBuilderFromFacts
 {
-	public function getDependencies()
+	/**
+	 * return a list of the facts that we are interested in exploring
+	 *
+	 * @return array<string>
+	 */
+	static public function getInterestsList()
 	{
 		return [
-			ComposerFacts\ComposerProject\DefinitionFactFinder::class,
+			ComposerFacts\ComposerProject\ComposerProjectFact::class
 		];
 	}
 
 	public function buildFactsFromData(Data $data, FactRepository $factRepo, FactBuilderQueue $factBuilderQueue)
 	{
-		switch (get_class($data)) {
+		switch (get_class($fact)) {
 			case FilesystemData::class:
 				// create our new fact
 				$composerJsonFileFact = FactBuilders\ComposerJsonFileFactBuilder::fromFilesystemData($data);
@@ -77,5 +82,10 @@ class FactBuilder implements DataFactBuilder
 				$factRepo->addFact($composerJsonFileFact);
 				break;
 		}
+	}
+
+	public function buildFactsFromFact(Fact $fact, FactRepository $factRepo, FactBuilderQueue $factBuilderQueue)
+	{
+
 	}
 }

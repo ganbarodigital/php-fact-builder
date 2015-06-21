@@ -43,7 +43,7 @@
 
 namespace GanbaroDigital\FactFinder\ComposerFacts\ValueBuilders;
 
-use GanbaroDigital\FactFinder\All\DataTypes\FilesystemData;
+use GanbaroDigital\FactFinder\Core\DataTypes\FilesystemData;
 use GanbaroDigital\FactFinder\ComposerFacts\ComposerProject\ComposerProjectFact;
 
 class ComposerJsonFilePathBuilder

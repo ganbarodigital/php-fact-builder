@@ -43,8 +43,8 @@
 
 namespace GanbaroDigital\FactFinder\ComposerFacts\Facts;
 
-use GanbaroDigital\FactFinder\DefinitionFact;
-use GanbaroDigital\FactFinder\FactTypes\InMemoryFact;
+use GanbaroDigital\FactFinder\Core\DefinitionFact;
+use GanbaroDigital\FactFinder\Core\FactTypes\InMemoryFact;
 
 /**
  * @method string getPathToFolder()
