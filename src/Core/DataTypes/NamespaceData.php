@@ -44,23 +44,25 @@
 namespace GanbaroDigital\FactFinder\Core\DataTypes;
 
 use GanbaroDigital\FactFinder\Core\Data;
+use GanbaroDigital\FactFinder\Core\FactTypes\InMemoryFact;
 
-class NamespaceData implements Data
+/**
+ * @method string getFolder()
+ * @method void   setFolder(string $folder)
+ * @method string getNamespace()
+ * @method void   setNamespace(string $namespace)
+ * @method string getAutoloadScheme
+ * @method void   setAutoloadScheme(string $scheme)
+ */
+class NamespaceData extends InMemoryFact implements Data
 {
+	const AUTOLOAD_PSR0 = "psr-0";
+	const AUTOLOAD_PSR4 = "psr-4";
+
 	public function __construct($namespace, $folder, $autoloadScheme)
 	{
-		$this->namespace      = $namespace;
-		$this->folder         = $folder;
-		$this->autoloadScheme = $autoloadScheme;
-	}
-
-	public function getFolder()
-	{
-		return $this->folder;
-	}
-
-	public function getNamespace()
-	{
-		return $this->namespace;
+		$this->setNamespace($namespace);
+		$this->setFolder($folder);
+		$this->setAutoloadScheme($autoloadScheme);
 	}
 }

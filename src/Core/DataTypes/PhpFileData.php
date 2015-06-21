@@ -44,25 +44,19 @@
 namespace GanbaroDigital\FactFinder\Core\DataTypes;
 
 use GanbaroDigital\FactFinder\Core\Data;
+use GanbaroDigital\FactFinder\Core\FactTypes\InMemoryFact;
 
-class PhpFileData implements Data
+/**
+ * @method string getNamespace()
+ * @method void   setNamespace(string $namespace)
+ * @method string getPathToFile()
+ * @method void   setPathToFile(string $path)
+ */
+class PhpFileData extends InMemoryFact implements Data
 {
-	protected $pathToFile;
-	protected $namespace;
-
 	public function __construct($pathToFile, $namespace = null)
 	{
-		$this->pathToFile = $pathToFile;
-		$this->namespace  = $namespace;
-	}
-
-	public function getPathToFile()
-	{
-		return $this->pathToFile;
-	}
-
-	public function getNamespace()
-	{
-		return $this->namespace;
+		$this->setPathToFile($pathToFile);
+		$this->setNamespace($namespace);
 	}
 }
