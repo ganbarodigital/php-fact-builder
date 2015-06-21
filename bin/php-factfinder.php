@@ -96,35 +96,55 @@ foreach ($seedFacts as $fact) {
 $interestsList = new InMemoryInterestsList();
 $knownBuilderClasses = [
 	ComposerFacts\ComposerProject\FactBuilder::class,
-	ComposerFacts\ComposerJsonFile\FactBuilder::class
+	ComposerFacts\ComposerJsonFile\FactBuilder::class,
+
+	PsrFacts\Psr0Folder\FactBuilder::class,
+	PsrFacts\Psr4Folder\FactBuilder::class,
 ];
 foreach($knownBuilderClasses as $knownBuilderClass) {
 	$interestsList->addInterestedBuilderClass($knownBuilderClass);
 }
 
 // this is the fact-finding loop
-foreach ($factFinderQueue->iterateFromQueue() as $item) {
-	echo "Exploring " . get_class($item) . ": " . json_encode($item) . PHP_EOL;
-	foreach ($interestsList->getBuildersInterestedIn(get_class($item)) as $factFinderClass) {
-		echo "  sending to " . $factFinderClass . PHP_EOL;
-		$factFinder = new $factFinderClass();
-		$facts = [];
+while (($item = $factFinderQueue->iterateFromQueue()) !== null) {
+	// what are we looking at?
+	echo "Exploring " . get_class($item) . PHP_EOL . "  " . $item->jsonEncode() . PHP_EOL;
+
+	// who wants to look at it?
+	$factBuilderClasses = $interestsList->getBuildersInterestedIn(get_class($item));
+	if (count($factBuilderClasses) === 0) {
+		echo "  no interest :(" . PHP_EOL;
+		continue;
+	}
+
+	// at least one fact builder is interested
+	foreach ($factBuilderClasses as $factBuilderClass) {
+		// this class is interested
+		echo "  sending to " . $factBuilderClass . PHP_EOL;
+		$factBuilder = new $factBuilderClass();
+
+		// let's get some results
+		$newItems = [];
 		if ($item instanceof Data) {
-			$facts = $factFinder->buildFactsFromData($item);
+			$newItems = $factBuilder->buildFactsFromData($item);
 		}
 		else if ($item instanceof Fact) {
-			$facts = $factFinder->buildFactsFromFact($item);
+			$newItems = $factBuilder->buildFactsFromFact($item);
 		}
 		else {
 			die("class '" . get_class($fact) . "' is unsupported in the fact finding loop" . PHP_EOL);
 		}
 
-		foreach ($facts as $fact) {
-			// remember our new facts for future discovery
-			$factRepository->addFact($fact);
+		// what did we discover?
+		echo "  discovered " . count($newItems) . " item(s) to explore" . PHP_EOL;
+		foreach ($newItems as $newItem) {
+			if ($newItem instanceof Fact) {
+				// remember our new facts for future discovery
+				$factRepository->addFact($newItem);
+			}
 
-			// these new facts will need exploring
-			$factFinderQueue->addItemToExplore($fact);
+			// these new items will need exploring
+			$factFinderQueue->addItemToExplore($newItem);
 		}
 	}
 }

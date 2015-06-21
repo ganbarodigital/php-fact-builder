@@ -71,24 +71,15 @@ class InMemoryFactBuilderQueue implements FactBuilderQueue
 
 	public function addDataToExplore(Data $data)
 	{
-		$this->exploreQueue[] = $data;
+		$this->exploreQueue[] = clone $data;
 	}
 
 	public function iterateFromQueue()
 	{
-		// we keep going until we run out of facts / data
-		//
-		// we cannot use a foreach() loop here, as foreach() does not notice
-		// when we add new things to the end of the factFinders list
-		while (true) {
-			$nextGroup = each($this->exploreQueue);
-			if (!is_array($nextGroup)) {
-				// we're done here
-				return;
-			}
+		// return the next thing in our queue
+		$retval = array_shift($this->exploreQueue);
 
-			$nextItem = $nextGroup[1];
-			yield($nextItem);
-		}
+		// all done
+		return $retval;
 	}
 }
