@@ -68,24 +68,47 @@ class FactBuilder implements FactBuilderFromData, FactBuilderFromFacts
 
 	public function buildFactsFromData(Data $data)
 	{
-		switch (get_class($fact)) {
+		switch (get_class($data)) {
 			case FilesystemData::class:
 				// create our new fact
 				$composerJsonFileFact = FactBuilders\ComposerJsonFileFactBuilder::fromFilesystemData($data);
 
-				// now, run our collection of fact builders to exact more
-				// meaning from this fact's raw data
-				FactBuilders\AutoloadPsr0FactBuilder::fromComposerJsonFileFact($composerJsonFileFact, $factBuilderQueue);
-				FactBuilders\AutoloadPsr4FactBuilder::fromComposerJsonFileFact($composerJsonFileFact, $factBuilderQueue);
+				// what can we learn from this fact?
+				$retval = array_merge([$composerJsonFileFact], $this->expandComposerJsonFileFact($composerJsonFileFact));
 
 				// all done
-				return [ $composerJsonFileFact ];
+				return $retval;
 				break;
 		}
 	}
 
 	public function buildFactsFromFact(Fact $fact)
 	{
-		return [];
+		switch(get_class($fact)) {
+			case ComposerFacts\Facts\ComposerProjectFact::class:
+				// create our new fact
+				$composerJsonFileFact = FactBuilders\ComposerJsonFileFactBuilder::fromComposerProjectFact($fact);
+
+				// what can we learn from this fact?
+				$retval = array_merge([$composerJsonFileFact], $this->expandComposerJsonFileFact($composerJsonFileFact));
+
+				// all done
+				return $retval;
+				break;
+		}
+	}
+
+	protected function expandComposerJsonFileFact($fact)
+	{
+		// our list of additional facts to return
+		$retval = [];
+
+		// now, run our collection of fact builders to exact more
+		// meaning from this fact's raw data
+		$retval = array_merge($retval, FactBuilders\AutoloadPsr0FactBuilder::fromComposerJsonFileFact($fact));
+		$retval = array_merge($retval, FactBuilders\AutoloadPsr4FactBuilder::fromComposerJsonFileFact($fact));
+
+		// all done
+		return $retval;
 	}
 }

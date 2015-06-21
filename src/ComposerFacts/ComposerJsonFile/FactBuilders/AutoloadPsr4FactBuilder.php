@@ -43,8 +43,7 @@
 
 namespace GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile\FactBuilders;
 
-use GanbaroDigital\FactFinder\FactBuilderQueue;
-use GanbaroDigital\FactFinder\All\DataTypes\NamespaceData;
+use GanbaroDigital\FactFinder\Core\DataTypes\NamespaceData;
 use GanbaroDigital\FactFinder\ComposerFacts;
 use GanbaroDigital\FactFinder\PsrFacts;
 
@@ -52,21 +51,27 @@ use GanbaroDigital\FactFinder\ComposerFacts\Facts\ComposerJsonFileFact;
 
 class AutoloadPsr4FactBuilder
 {
-	static public function fromComposerJsonFileFact(ComposerJsonFileFact $fact, FactBuilderQueue $factBuilderQueue)
+	static public function fromComposerJsonFileFact(ComposerJsonFileFact $fact)
 	{
+		// the list of additional data that we are building
+		$retval = [];
+
 		// we are going to expand on the raw JSON data
 		$composerJson = $fact->getRawJson();
 
 		// do we have anything to do?
 		if (!(isset($composerJson->autoload, $composerJson->autoload->{'psr-4'}))) {
-			return;
+			return $retval;
 		}
 
 		// at this point, yes we do
 		foreach ($composerJson->autoload->{'psr-4'} as $namespace => $subFolder) {
 			$projectFolder = ComposerFacts\ValueBuilders\PathToAutoloadFolder::fromComposerJsonFileFact($fact, $subFolder);
 			$seedData = new NamespaceData($namespace, $projectFolder, 'psr4');
-			$factBuilderQueue->addSeedDataToExplore($seedData, PsrFacts\Psr0Folder\FactBuilder::class);
+			$retval[] = $seedData;
 		}
+
+		// all done
+		return $retval;
 	}
 }
