@@ -44,6 +44,7 @@
 
 use GanbaroDigital\FactFinder\Core\Data;
 use GanbaroDigital\FactFinder\Core\DataTypes\FilesystemData;
+use GanbaroDigital\FactFinder\Core\Fact;
 use GanbaroDigital\FactFinder\Core\FactRepositories\InMemoryFactRepository;
 use GanbaroDigital\FactFinder\Core\FactBuilderQueues\InMemoryFactBuilderQueue;
 use GanbaroDigital\FactFinder\Core\FactBuilding\InMemoryInterestsList;
