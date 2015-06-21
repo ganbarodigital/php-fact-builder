@@ -110,4 +110,9 @@ class InMemoryFact
         // all done
         return [$verb, $retval];
 	}
+
+	public function jsonEncode($flags = null)
+	{
+		return json_encode($this->info, $flags);
+	}
 }
