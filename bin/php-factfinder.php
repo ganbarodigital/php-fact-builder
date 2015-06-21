@@ -130,4 +130,6 @@ foreach ($factFinderQueue->iterateFromQueue() as $item) {
 }
 
 // to make it easier to inspect, dump the facts as JSON
+echo PHP_EOL;
+echo "Final set of facts are:" . PHP_EOL . PHP_EOL;
 echo json_encode($factRepository->getFacts(), JSON_PRETTY_PRINT) . PHP_EOL;
