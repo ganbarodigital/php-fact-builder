@@ -43,27 +43,50 @@
 
 namespace GanbaroDigital\FactFinder\PsrFacts\Psr4Folder;
 
-use GanbaroDigital\FactFinder\DataFactBuilder;
-use GanbaroDigital\FactFinder\FactBuilderQueue;
-use GanbaroDigital\FactFinder\FactRepository;
-use GanbaroDigital\FactFinder\Data;
+use GanbaroDigital\FactFinder\Core\FactBuilderFromData;
+use GanbaroDigital\FactFinder\Core\Data;
+use GanbaroDigital\FactFinder\Core\DataTypes\FilesystemData;
+use GanbaroDigital\FactFinder\Core\DataTypes\NamespaceData;
+use GanbaroDigital\FactFinder\Core\DataTypes\PhpFileData;
 
-class FactBuilder implements DataFactBuilder
+use GanbaroDigital\FactFinder\PhpFacts;
+use GanbaroDigital\FactFinder\PsrFacts;
+
+class FactBuilder implements FactBuilderFromData
 {
-	public function buildFactsFromData(Data $data, FactRepository $factRepo, FactBuilderQueue $factBuilderQueue)
+	static public function getInterestsList()
 	{
-		switch (get_class($data)) {
-			case NamespaceData::class:
-				$path      = $data->getFolder();
-				$namespace = $data->getNamespace();
+		return [
+			NamespaceData::class,
+		];
+	}
 
-				$data = new FilesystemData($path);
-				$phpFiles = PsrFacts\ValueBuilders\FolderToPhpSourceFiles::fromFilesystemData($data);
+	public function buildFactsFromData(Data $data)
+	{
+		// our return value
+		$retval = [];
 
-				foreach ($phpFiles as $phpFile) {
-					$data = new PhpFileData($phpFile, $namespace);
-					$factBuilderQueue->addSeedDataToExplore($data, PhpFacts\PhpSourceCodeFile\FactBuilder::class);
-				}
-				break;
+		// we are only interested in PSR-4 namespaces
+		if (! $data instanceof NamespaceData) {
+			return $retval;
+		}
+
+		if ($data->getAutoloadScheme() !== NamespaceData::AUTOLOAD_PSR4) {
+			return $retval;
+		}
+
+		// at this point, we are interested
+		$path      = $data->getFolder();
+		$namespace = $data->getNamespace();
+
+		$data = new FilesystemData($path);
+		$phpFiles = PsrFacts\ValueBuilders\FolderToPhpSourceFiles::fromFilesystemData($data);
+
+		foreach ($phpFiles as $phpFile) {
+			$retval[] = new PhpFileData($phpFile, $namespace);
+		}
+
+		// all done
+		return $retval;
 	}
 }
