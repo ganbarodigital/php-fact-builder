@@ -70,7 +70,7 @@ class FactBuilder implements FactBuilderFromData
 	//
 	// ------------------------------------------------------------------
 
-	public function buildFactsFromData(Data $rootData, FactRepository $factRepo, FactBuilderQueue $factBuilderQueue)
+	public function buildFactsFromData(Data $rootData)
 	{
 		// is this a composer project?
 		$this->requireIsComposerProject($rootData);
@@ -88,13 +88,8 @@ class FactBuilder implements FactBuilderFromData
 		$composerProjectFact->setHasComposerJson(true);
 		$composerProjectFact->setComposerJsonFilename($composerJsonFilename);
 
-		// remember the fact
-		$factRepo->addFact($composerProjectFact);
-
-		// add it to the queue for others to look at
-		$factBuilderQueue->addFactToExplore($composerProjectFact);
-
 		// all done
+		return [ $composerProjectFact ];
 	}
 
 	protected function requireIsComposerProject(FilesystemData $rootData)

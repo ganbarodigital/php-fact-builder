@@ -82,7 +82,11 @@ $factFinderQueue = new InMemoryFactBuilderQueue();
 
 // we're going to seed the whole thing now
 $factFinderSeed = new FilesystemData($rootFactSeed);
-$rootFactFinder->buildFactsFromData($factFinderSeed, $factRepository, $factFinderQueue);
+$seedFacts = $rootFactFinder->buildFactsFromData($factFinderSeed);
+foreach ($seedFacts as $fact) {
+	$factRepository->addFact($fact);
+	$factFinderQueue->addFactToExplore($fact);
+}
 
 // at this point, we (hopefully) have at least one fact in the queue to be
 // examined
@@ -101,15 +105,25 @@ foreach($knownBuilderClasses as $knownBuilderClass) {
 foreach ($factFinderQueue->iterateFromQueue() as $item) {
 	echo "Exploring " . get_class($item) . ": " . json_encode($item) . PHP_EOL;
 	foreach ($interestsList->getBuildersInterestedIn(get_class($item)) as $factFinderClass) {
+		echo "  sending to " . $factFinderClass . PHP_EOL;
 		$factFinder = new $factFinderClass();
+		$facts = [];
 		if ($item instanceof Data) {
-			$factFinder->buildFactsFromData($item, $factRepository, $factFinderQueue);
+			$facts = $factFinder->buildFactsFromData($item);
 		}
 		else if ($item instanceof Fact) {
-			$factFinder->buildFactsFromFact($item, $factRepository, $factFinderQueue);
+			$facts = $factFinder->buildFactsFromFact($item);
 		}
 		else {
 			die("class '" . get_class($fact) . "' is unsupported in the fact finding loop" . PHP_EOL);
+		}
+
+		foreach ($facts as $fact) {
+			// remember our new facts for future discovery
+			$factRepository->addFact($fact);
+
+			// these new facts will need exploring
+			$factFinderQueue->addFactToExplore($fact);
 		}
 	}
 }

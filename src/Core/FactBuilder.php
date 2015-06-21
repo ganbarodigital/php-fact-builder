@@ -45,4 +45,13 @@ namespace GanbaroDigital\FactFinder\Core;
 
 interface FactBuilder
 {
+	/**
+	 * return a list of facts and data that this fact builder is interested in
+	 *
+	 * the return array is a list of PHP classes that represent the facts
+	 * or data that we want to see
+	 *
+	 * @return array<string>
+	 */
+	static public function getInterestsList();
 }

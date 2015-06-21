@@ -66,7 +66,7 @@ class FactBuilder implements FactBuilderFromData, FactBuilderFromFacts
 		];
 	}
 
-	public function buildFactsFromData(Data $data, FactRepository $factRepo, FactBuilderQueue $factBuilderQueue)
+	public function buildFactsFromData(Data $data)
 	{
 		switch (get_class($fact)) {
 			case FilesystemData::class:
@@ -78,14 +78,14 @@ class FactBuilder implements FactBuilderFromData, FactBuilderFromFacts
 				FactBuilders\AutoloadPsr0FactBuilder::fromComposerJsonFileFact($composerJsonFileFact, $factBuilderQueue);
 				FactBuilders\AutoloadPsr4FactBuilder::fromComposerJsonFileFact($composerJsonFileFact, $factBuilderQueue);
 
-				// we need to add this fact into the repository
-				$factRepo->addFact($composerJsonFileFact);
+				// all done
+				return [ $composerJsonFileFact ];
 				break;
 		}
 	}
 
-	public function buildFactsFromFact(Fact $fact, FactRepository $factRepo, FactBuilderQueue $factBuilderQueue)
+	public function buildFactsFromFact(Fact $fact)
 	{
-
+		return [];
 	}
 }
