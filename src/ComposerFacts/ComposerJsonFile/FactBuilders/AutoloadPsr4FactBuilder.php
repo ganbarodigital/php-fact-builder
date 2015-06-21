@@ -67,7 +67,7 @@ class AutoloadPsr4FactBuilder
 		// at this point, yes we do
 		foreach ($composerJson->autoload->{'psr-4'} as $namespace => $subFolder) {
 			$projectFolder = ComposerFacts\ValueBuilders\PathToAutoloadFolder::fromComposerJsonFileFact($fact, $subFolder);
-			$seedData = new NamespaceData($namespace, $projectFolder, 'psr4');
+			$seedData = new NamespaceData($namespace, $projectFolder, NamespaceData::AUTOLOAD_PSR4);
 			$retval[] = $seedData;
 		}
 
