@@ -44,13 +44,14 @@
 namespace GanbaroDigital\FactFinder\ComposerFacts\FactBuilders;
 
 use GanbaroDigital\FactFinder\AllFacts;
-use GanbaroDigital\FactFinder\Core\Data;
-use GanbaroDigital\FactFinder\Core\DataTypes\FilesystemData;
 use GanbaroDigital\FactFinder\Core\Fact;
 use GanbaroDigital\FactFinder\Core\FactBuilderQueue;
 use GanbaroDigital\FactFinder\Core\FactRepository;
 use GanbaroDigital\FactFinder\Core\FactBuilderFromData;
 use GanbaroDigital\FactFinder\ComposerFacts;
+
+use GanbaroDigital\Filesystem\Checks\IsValidJsonFile;
+use GanbaroDigital\Filesystem\DataTypes\FilesystemPathData;
 
 class ComposerProjectFactBuilder implements FactBuilderFromData
 {
@@ -64,19 +65,19 @@ class ComposerProjectFactBuilder implements FactBuilderFromData
 		return [];
 	}
 
-	static public function fromFilesystemData(FilesystemData $fsData)
+	static public function fromFilesystemPathData(FilesystemPathData $fsData)
 	{
 		// our return value
 		$retval = [];
 
-		if (!ComposerFacts\Checks\HasAComposerJsonFile::isSatisfiedBy($fsData)) {
+		if (!ComposerFacts\Checks\HasAComposerJsonFile::checkFilesystemPathData($fsData)) {
 			return $retval;
 		}
 
 		// our composer file
-		$composerJsonFilename = ComposerFacts\ValueBuilders\ComposerJsonFilePathBuilder::fromFilesystemData($fsData);
+		$composerJsonFilename = ComposerFacts\ValueBuilders\ComposerJsonFilePathBuilder::fromFilesystemPathData($fsData);
 
-		if (!AllFacts\Checks\IsValidJsonFile::isSatisfiedBy($composerJsonFilename)) {
+		if (!IsValidJsonFile::checkFilesystemPathData($composerJsonFilename)) {
 			return $retval;
 		}
 

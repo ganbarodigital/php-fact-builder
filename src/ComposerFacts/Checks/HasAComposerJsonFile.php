@@ -43,22 +43,23 @@
 
 namespace GanbaroDigital\FactFinder\ComposerFacts\Checks;
 
-use GanbaroDigital\FactFinder\AllFacts\Checks\FilesystemCheck;
-use GanbaroDigital\FactFinder\Core\DataTypes\FilesystemData;
+use GanbaroDigital\Filesystem\Checks\FilesystemPathCheck;
+use GanbaroDigital\Filesystem\Checks\IsFolder;
+use GanbaroDigital\Filesystem\Checks\IsReadableFile;
+use GanbaroDigital\Filesystem\DataTypes\FilesystemPathData;
 
 use GanbaroDigital\FactFinder\ComposerFacts\ValueBuilders\ComposerJsonFilePathBuilder;
 
-class HasAComposerJsonFile implements FilesystemCheck
+class HasAComposerJsonFile implements FilesystemPathCheck
 {
-	static public function isSatisfiedBy(FilesystemData $fsData)
+	static public function checkFilesystemPathData(FilesystemPathData $fsData)
 	{
-		$folderPath = $fsData->getFileOrFolderPath();
-		if (!is_dir($folderPath)) {
+		if (!IsFolder::checkFilesystemPathData($fsData)) {
 			return false;
 		}
 
-		$composerPath = ComposerJsonFilePathBuilder::fromFilesystemData($fsData);
-		if (!file_exists($composerPath)) {
+		$composerPath = ComposerJsonFilePathBuilder::fromFilesystemPathData($fsData);
+		if (!IsReadableFile::checkFilesystemPathData($composerPath)) {
 			return false;
 		}
 

@@ -43,12 +43,13 @@
  */
 
 use GanbaroDigital\FactFinder\Core\Data;
-use GanbaroDigital\FactFinder\Core\DataTypes\FilesystemData;
 use GanbaroDigital\FactFinder\Core\Fact;
 use GanbaroDigital\FactFinder\Core\FactRepositories\InMemoryFactRepository;
 use GanbaroDigital\FactFinder\Core\FactBuilderQueues\InMemoryFactBuilderQueue;
 use GanbaroDigital\FactFinder\Core\FactBuilding\InMemoryInterestsList;
 use GanbaroDigital\FactFinder\Core\FactBuilderFromData;
+
+use GanbaroDigital\Filesystem\DataTypes\FilesystemPathData;
 
 // a list of the fact builders that we want to use
 // @TODO: find a way to make this discoverable in code
@@ -77,8 +78,8 @@ $factRepository = new InMemoryFactRepository();
 $factFinderQueue = new InMemoryFactBuilderQueue();
 
 // we're going to seed the whole thing now
-$factFinderSeed = new FilesystemData($rootFactSeed);
-$seedFacts = $rootFactBuilderName::fromFilesystemData($factFinderSeed);
+$factFinderSeed = new FilesystemPathData($rootFactSeed);
+$seedFacts = $rootFactBuilderName::fromFilesystemPathData($factFinderSeed);
 foreach ($seedFacts as $fact) {
 	$factRepository->addFact($fact);
 	$factFinderQueue->addFactToExplore($fact);
@@ -105,7 +106,7 @@ foreach($knownBuilderClasses as $knownBuilderClass) {
 // this is the fact-finding loop
 while (($item = $factFinderQueue->iterateFromQueue()) !== null) {
 	// what are we looking at?
-	echo "Exploring " . get_class($item) . PHP_EOL . "  " . $item->jsonEncode() . PHP_EOL;
+	echo "Exploring " . get_class($item) . PHP_EOL . "  " . json_encode($item) . PHP_EOL;
 
 	// who wants to look at it?
 	$factBuilderClasses = $interestsList->getBuildersInterestedIn(get_class($item));

@@ -43,13 +43,13 @@
 
 namespace GanbaroDigital\FactFinder\PsrFacts\ValueBuilders;
 
-use GanbaroDigital\FactFinder\AllFacts\ValueBuilders\FolderToMatchingFiles;
-use GanbaroDigital\FactFinder\Core\DataTypes\FilesystemData;
+use GanbaroDigital\Filesystem\DataTypes\FilesystemPathData;
+use GanbaroDigital\Filesystem\ValueBuilders\FolderToMatchingFiles;
 
 class FolderToPhpSourceFiles
 {
-	static public function fromFilesystemData(FilesystemData $fsData)
+	static public function fromFilesystemPathData(FilesystemPathData $fsData)
 	{
-		return FolderToMatchingFiles::fromFilesystemData($fsData, ".+\\.php");
+		return FolderToMatchingFiles::fromFilesystemPathData($fsData, ".+\\.php");
 	}
 }

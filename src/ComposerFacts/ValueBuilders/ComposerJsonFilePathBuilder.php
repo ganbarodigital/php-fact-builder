@@ -43,8 +43,8 @@
 
 namespace GanbaroDigital\FactFinder\ComposerFacts\ValueBuilders;
 
-use GanbaroDigital\FactFinder\Core\DataTypes\FilesystemData;
 use GanbaroDigital\FactFinder\ComposerFacts\ComposerProject\ComposerProjectFact;
+use GanbaroDigital\Filesystem\DataTypes\FilesystemPathData;
 
 class ComposerJsonFilePathBuilder
 {
@@ -55,11 +55,11 @@ class ComposerJsonFilePathBuilder
 		return $composerJsonPath;
 	}
 
-	static public function fromFilesystemData(FilesystemData $fsData)
+	static public function fromFilesystemPathData(FilesystemPathData $fsData)
 	{
 		$folderPath = $fsData->getFileOrFolderPath();
 		$composerJsonPath = self::addFilenameToPath($folderPath);
-		return $composerJsonPath;
+		return new FilesystemPathData($composerJsonPath);
 	}
 
 	static protected function addFilenameToPath($folderPath)

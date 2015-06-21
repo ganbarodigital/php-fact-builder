@@ -45,9 +45,9 @@ namespace GanbaroDigital\FactFinder\PsrFacts\FactBuilders;
 
 use GanbaroDigital\FactFinder\Core\FactBuilderFromData;
 use GanbaroDigital\FactFinder\Core\Data;
-use GanbaroDigital\FactFinder\Core\DataTypes\FilesystemData;
 use GanbaroDigital\FactFinder\Core\DataTypes\NamespaceData;
 use GanbaroDigital\FactFinder\Core\DataTypes\PhpFileData;
+use GanbaroDigital\Filesystem\DataTypes\FilesystemPathData;
 
 use GanbaroDigital\FactFinder\PhpFacts;
 use GanbaroDigital\FactFinder\PsrFacts;
@@ -74,8 +74,8 @@ class Psr0FolderFactBuilder implements FactBuilderFromData
 		$path      = $data->getFolder();
 		$namespace = $data->getNamespace();
 
-		$data = new FilesystemData($path);
-		$phpFiles = PsrFacts\ValueBuilders\FolderToPhpSourceFiles::fromFilesystemData($data);
+		$data = new FilesystemPathData($path);
+		$phpFiles = PsrFacts\ValueBuilders\FolderToPhpSourceFiles::fromFilesystemPathData($data);
 
 		foreach ($phpFiles as $phpFile) {
 			$retval[] = new PhpFileData($phpFile, $namespace);
