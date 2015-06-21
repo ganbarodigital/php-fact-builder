@@ -45,13 +45,4 @@ namespace GanbaroDigital\FactFinder\Core;
 
 interface FactBuilderFromFacts extends FactBuilder
 {
-	/**
-	 * create one or more facts from an existing fact
-	 *
-	 * @param  Fact $fact
-	 *         the fact to (attempt to) build facts from
-	 * @return array<Fact>
-	 *         the new fact(s) that we have built from the data
-	 */
-	public function buildFactsFromFact(Fact $data);
 }

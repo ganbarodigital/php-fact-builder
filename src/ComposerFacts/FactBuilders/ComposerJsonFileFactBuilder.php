@@ -41,37 +41,67 @@
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-namespace GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile\FactBuilders;
+namespace GanbaroDigital\FactFinder\ComposerFacts\FactBuilders;
 
-use GanbaroDigital\FactFinder\Core\DataTypes\NamespaceData;
+use GanbaroDigital\FactFinder\Core\Data;
+use GanbaroDigital\FactFinder\Core\Fact;
+use GanbaroDigital\FactFinder\Core\FactBuilderFromData;
+use GanbaroDigital\FactFinder\Core\FactBuilderFromFacts;
+use GanbaroDigital\FactFinder\Core\FactBuilderQueue;
+use GanbaroDigital\FactFinder\Core\FactRepository;
+
 use GanbaroDigital\FactFinder\ComposerFacts;
-use GanbaroDigital\FactFinder\PsrFacts;
 
-use GanbaroDigital\FactFinder\ComposerFacts\Facts\ComposerJsonFileFact;
-
-class AutoloadPsr0FactBuilder
+class ComposerJsonFileFactBuilder implements FactBuilderFromData, FactBuilderFromFacts
 {
-	static public function fromComposerJsonFileFact(ComposerJsonFileFact $fact)
+	/**
+	 * return a list of the facts that we are interested in exploring
+	 *
+	 * @return array<string>
+	 */
+	static public function getInterestsList()
 	{
-		// the list of additional data items we are building
-		$retval = [];
+		return [
+			ComposerFacts\Facts\ComposerProjectFact::class
+		];
+	}
 
-		// we are going to expand on the raw JSON data
-		$composerJson = $fact->getRawJson();
+	static public function fromComposerProjectFact(ComposerFacts\Facts\ComposerProjectFact $fact)
+	{
+		$composerJsonFilename = $fact->getComposerJsonFilename();
+		return self::fromFilename($composerJsonFilename);
+	}
 
-		// do we have anything to do?
-		if (!(isset($composerJson->autoload, $composerJson->autoload->{'psr-0'}))) {
-			return $retval;
+	static public function fromFilesystemData(FilesystemData $fsData)
+	{
+		$composerJsonFilename = $fsData->getFileOrFolderPath();
+		return self::fromFilename($composerJsonFilename);
+	}
+
+	static public function fromFilename($composerJsonFilename)
+	{
+		// the fact that we are building
+		$retval = new ComposerFacts\Facts\ComposerJsonFileFact;
+
+		// load the composer file
+		$contents = json_decode(file_get_contents($composerJsonFilename));
+
+		// convert the contents to facts
+		$retval->setPathToFile($composerJsonFilename);
+		$retval->setRawJson($contents);
+
+		// everything below here is obsolete and needs removing
+		if (isset($contents->require)) {
+			$retval->setRequire($contents->require);
 		}
-
-		// at this point, yes we do
-		foreach ($composerJson->autoload->{'psr-0'} as $namespace => $subFolder) {
-			$projectFolder = ComposerFacts\ValueBuilders\PathToAutoloadFolder::fromComposerJsonFileFact($fact, $subFolder);
-			$seedData = new NamespaceData($namespace, $projectFolder, NamespaceData::AUTOLOAD_PSR0);
-			$retval[] = $seedData;
+		if (isset($contents->{'require-dev'})) {
+			$retval->setRequireDev($contents->{'require-dev'});
+		}
+		if (isset($contents->autoload, $contents->autoload->files)) {
+			$retval->setAutoloadFiles($contents->autoload->files);
 		}
 
 		// all done
-		return $retval;
+		return [ $retval ];
 	}
 }

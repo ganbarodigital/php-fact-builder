@@ -34,35 +34,54 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/ComposerFacts
+ * @package   FactFinder/PsrFacts
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-namespace GanbaroDigital\FactFinder\ComposerFacts\ComposerPackage;
+namespace GanbaroDigital\FactFinder\PsrFacts\FactBuilders;
 
-use GanbaroDigital\FactFinder\Fact;
-use GanbaroDigital\FactFinder\FactFinder;
-use GanbaroDigital\FactFinder\FactRepository;
-use GanbaroDigital\FactFinder\FactFinderQueue;
-use GanbaroDigital\FactFinder\ComposerFacts;
+use GanbaroDigital\FactFinder\Core\FactBuilderFromData;
+use GanbaroDigital\FactFinder\Core\Data;
+use GanbaroDigital\FactFinder\Core\DataTypes\FilesystemData;
+use GanbaroDigital\FactFinder\Core\DataTypes\NamespaceData;
+use GanbaroDigital\FactFinder\Core\DataTypes\PhpFileData;
 
-class DefinitionFactFinder implements FactFinder
+use GanbaroDigital\FactFinder\PhpFacts;
+use GanbaroDigital\FactFinder\PsrFacts;
+
+class Psr4FolderFactBuilder implements FactBuilderFromData
 {
-	public function getDependencies()
+	static public function getInterestsList()
 	{
 		return [
-			ComposerFacts\ComposerProject\DefinitionFactFinder::class,
+			NamespaceData::class,
 		];
 	}
 
-	public function findFactsFromFact(Fact $fact, FactRepository $factRepo, FactFinderQueue $factFinderQueue)
+	static public function fromNamespaceData(Data $data)
 	{
-		switch(get_class($fact)) {
-			case ComposerFacts\Composer
-		}
-	}
+		// our return value
+		$retval = [];
 
+		if ($data->getAutoloadScheme() !== NamespaceData::AUTOLOAD_PSR4) {
+			return $retval;
+		}
+
+		// at this point, we are interested
+		$path      = $data->getFolder();
+		$namespace = $data->getNamespace();
+
+		$data = new FilesystemData($path);
+		$phpFiles = PsrFacts\ValueBuilders\FolderToPhpSourceFiles::fromFilesystemData($data);
+
+		foreach ($phpFiles as $phpFile) {
+			$retval[] = new PhpFileData($phpFile, $namespace);
+		}
+
+		// all done
+		return $retval;
+	}
 }

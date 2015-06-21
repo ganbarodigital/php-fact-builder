@@ -59,20 +59,15 @@ use GanbaroDigital\FactFinder\PsrFacts;
 // temporary
 require_once (__DIR__ . '/../vendor/autoload.php');
 
-// first argument is the 'root' fact to start from
-$rootFactName = $argv[1];
+// first argument is the 'root' fact builder to start from
+$rootFactBuilderName = $argv[1];
 
 // second argument is the starting point to seed the 'root' fact with
 $rootFactSeed = $argv[2];
 
-// do we have a fact finder that we can use here?
-$rootFactFinderName = $rootFactName . '\FactBuilder';
-if (!class_exists($rootFactFinderName)) {
-	die("Cannot find root fact finder class '{$rootFactFinderName}" . PHP_EOL);
-}
-$rootFactFinder = new $rootFactFinderName();
-if (!$rootFactFinder instanceof FactBuilderFromData) {
-	die("class '{$rootFactFinderName}' does not support being a 'root' for fact finding" . PHP_EOL);
+// do we have a fact builder that we can use here?
+if (!class_exists($rootFactBuilderName)) {
+	die("Cannot find fact builder class '{$rootFactBuilderName}" . PHP_EOL);
 }
 
 // we need something to store the facts in
@@ -83,7 +78,7 @@ $factFinderQueue = new InMemoryFactBuilderQueue();
 
 // we're going to seed the whole thing now
 $factFinderSeed = new FilesystemData($rootFactSeed);
-$seedFacts = $rootFactFinder->buildFactsFromData($factFinderSeed);
+$seedFacts = $rootFactBuilderName::fromFilesystemData($factFinderSeed);
 foreach ($seedFacts as $fact) {
 	$factRepository->addFact($fact);
 	$factFinderQueue->addFactToExplore($fact);
@@ -95,11 +90,13 @@ foreach ($seedFacts as $fact) {
 // let's build up the list of builders that are interested in facts
 $interestsList = new InMemoryInterestsList();
 $knownBuilderClasses = [
-	ComposerFacts\ComposerProject\FactBuilder::class,
-	ComposerFacts\ComposerJsonFile\FactBuilder::class,
+	ComposerFacts\FactBuilders\ComposerProjectFactBuilder::class,
+	ComposerFacts\FactBuilders\ComposerJsonFileFactBuilder::class,
+	ComposerFacts\FactBuilders\AutoloadPsr0FactBuilder::class,
+	ComposerFacts\FactBuilders\AutoloadPsr4FactBuilder::class,
 
-	PsrFacts\Psr0Folder\FactBuilder::class,
-	PsrFacts\Psr4Folder\FactBuilder::class,
+	PsrFacts\FactBuilders\Psr0FolderFactBuilder::class,
+	PsrFacts\FactBuilders\Psr4FolderFactBuilder::class,
 ];
 foreach($knownBuilderClasses as $knownBuilderClass) {
 	$interestsList->addInterestedBuilderClass($knownBuilderClass);
@@ -119,21 +116,17 @@ while (($item = $factFinderQueue->iterateFromQueue()) !== null) {
 
 	// at least one fact builder is interested
 	foreach ($factBuilderClasses as $factBuilderClass) {
-		// this class is interested
+		// this class seems interested
 		echo "  sending to " . $factBuilderClass . PHP_EOL;
-		$factBuilder = new $factBuilderClass();
+		$parts = explode('\\', get_class($item));
+		$method = 'from' . end($parts);
+
+		if (!method_exists($factBuilderClass, $method)) {
+			die("class " . $factBuilderClass . " does not accept " . get_class($item) . " items" . PHP_EOL);
+		}
 
 		// let's get some results
-		$newItems = [];
-		if ($item instanceof Data) {
-			$newItems = $factBuilder->buildFactsFromData($item);
-		}
-		else if ($item instanceof Fact) {
-			$newItems = $factBuilder->buildFactsFromFact($item);
-		}
-		else {
-			die("class '" . get_class($fact) . "' is unsupported in the fact finding loop" . PHP_EOL);
-		}
+		$newItems = $factBuilderClass::$method($item);
 
 		// what did we discover?
 		echo "  discovered " . count($newItems) . " item(s) to explore" . PHP_EOL;

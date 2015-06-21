@@ -41,35 +41,51 @@
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-namespace GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile\FactBuilders;
+namespace GanbaroDigital\FactFinder\ComposerFacts\FactBuilders;
 
-use GanbaroDigital\FactFinder\Core\DataTypes\NamespaceData;
+use GanbaroDigital\FactFinder\AllFacts;
+use GanbaroDigital\FactFinder\Core\Data;
+use GanbaroDigital\FactFinder\Core\DataTypes\FilesystemData;
+use GanbaroDigital\FactFinder\Core\Fact;
+use GanbaroDigital\FactFinder\Core\FactBuilderQueue;
+use GanbaroDigital\FactFinder\Core\FactRepository;
+use GanbaroDigital\FactFinder\Core\FactBuilderFromData;
 use GanbaroDigital\FactFinder\ComposerFacts;
-use GanbaroDigital\FactFinder\PsrFacts;
 
-use GanbaroDigital\FactFinder\ComposerFacts\Facts\ComposerJsonFileFact;
-
-class AutoloadPsr4FactBuilder
+class ComposerProjectFactBuilder implements FactBuilderFromData
 {
-	static public function fromComposerJsonFileFact(ComposerJsonFileFact $fact)
+	/**
+	 * return a list of the facts that we are interested in exploring
+	 *
+	 * @return array<string>
+	 */
+	static public function getInterestsList()
 	{
-		// the list of additional data that we are building
+		return [];
+	}
+
+	static public function fromFilesystemData(FilesystemData $fsData)
+	{
+		// our return value
 		$retval = [];
 
-		// we are going to expand on the raw JSON data
-		$composerJson = $fact->getRawJson();
-
-		// do we have anything to do?
-		if (!(isset($composerJson->autoload, $composerJson->autoload->{'psr-4'}))) {
+		if (!ComposerFacts\Checks\HasAComposerJsonFile::isSatisfiedBy($fsData)) {
 			return $retval;
 		}
 
-		// at this point, yes we do
-		foreach ($composerJson->autoload->{'psr-4'} as $namespace => $subFolder) {
-			$projectFolder = ComposerFacts\ValueBuilders\PathToAutoloadFolder::fromComposerJsonFileFact($fact, $subFolder);
-			$seedData = new NamespaceData($namespace, $projectFolder, NamespaceData::AUTOLOAD_PSR4);
-			$retval[] = $seedData;
+		// our composer file
+		$composerJsonFilename = ComposerFacts\ValueBuilders\ComposerJsonFilePathBuilder::fromFilesystemData($fsData);
+
+		if (!AllFacts\Checks\IsValidJsonFile::isSatisfiedBy($composerJsonFilename)) {
+			return $retval;
 		}
+
+		// at this point, we have something that looks like a composer project
+		$composerProjectFact = new ComposerFacts\Facts\ComposerProjectFact();
+		$composerProjectFact->setPathToFolder(dirname($composerJsonFilename));
+		$composerProjectFact->setHasComposerJson(true);
+		$composerProjectFact->setComposerJsonFilename($composerJsonFilename);
+		$retval[] = $composerProjectFact;
 
 		// all done
 		return $retval;

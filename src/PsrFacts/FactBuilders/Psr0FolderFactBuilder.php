@@ -34,53 +34,51 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/ComposerFacts
+ * @package   FactFinder/PsrFacts
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-namespace GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile\FactBuilders;
+namespace GanbaroDigital\FactFinder\PsrFacts\FactBuilders;
 
-use GanbaroDigital\FactFinder\All\DataTypes\FilesystemData;
-use GanbaroDigital\FactFinder\ComposerFacts;
+use GanbaroDigital\FactFinder\Core\FactBuilderFromData;
+use GanbaroDigital\FactFinder\Core\Data;
+use GanbaroDigital\FactFinder\Core\DataTypes\FilesystemData;
+use GanbaroDigital\FactFinder\Core\DataTypes\NamespaceData;
+use GanbaroDigital\FactFinder\Core\DataTypes\PhpFileData;
 
-class ComposerJsonFileFactBuilder
+use GanbaroDigital\FactFinder\PhpFacts;
+use GanbaroDigital\FactFinder\PsrFacts;
+
+class Psr0FolderFactBuilder implements FactBuilderFromData
 {
-	static public function fromComposerProjectFact(ComposerFacts\Facts\ComposerProjectFact $fact)
+	static public function getInterestsList()
 	{
-		$composerJsonFilename = $fact->getComposerJsonFilename();
-		return self::fromFilename($composerJsonFilename);
+		return [
+			NamespaceData::class,
+		];
 	}
 
-	static public function fromFilesystemData(FilesystemData $fsData)
+	static public function fromNamespaceData(NamespaceData $data)
 	{
-		$composerJsonFilename = $fsData->getFileOrFolderPath();
-		return self::fromFilename($composerJsonFilename);
-	}
+		// our return value
+		$retval = [];
 
-	static public function fromFilename($composerJsonFilename)
-	{
-		// the fact that we are building
-		$retval = new ComposerFacts\Facts\ComposerJsonFileFact;
-
-		// load the composer file
-		$contents = json_decode(file_get_contents($composerJsonFilename));
-
-		// convert the contents to facts
-		$retval->setPathToFile($composerJsonFilename);
-		$retval->setRawJson($contents);
-
-		// everything below here is obsolete and needs removing
-		if (isset($contents->require)) {
-			$retval->setRequire($contents->require);
+		if ($data->getAutoloadScheme() !== NamespaceData::AUTOLOAD_PSR0) {
+			return $retval;
 		}
-		if (isset($contents->{'require-dev'})) {
-			$retval->setRequireDev($contents->{'require-dev'});
-		}
-		if (isset($contents->autoload, $contents->autoload->files)) {
-			$retval->setAutoloadFiles($contents->autoload->files);
+
+		// at this point, we are interested
+		$path      = $data->getFolder();
+		$namespace = $data->getNamespace();
+
+		$data = new FilesystemData($path);
+		$phpFiles = PsrFacts\ValueBuilders\FolderToPhpSourceFiles::fromFilesystemData($data);
+
+		foreach ($phpFiles as $phpFile) {
+			$retval[] = new PhpFileData($phpFile, $namespace);
 		}
 
 		// all done

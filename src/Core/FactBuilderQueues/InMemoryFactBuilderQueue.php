@@ -59,8 +59,11 @@ class InMemoryFactBuilderQueue implements FactBuilderQueue
 		else if ($item instanceof Data) {
 			$this->addDataToExplore($item);
 		}
-		else {
+		else if (is_object($item)) {
 			throw new \Exception("Unsupported item type " . get_class($item));
+		}
+		else {
+			throw new \Exception("Unsupported item type " . json_encode($item));
 		}
 	}
 

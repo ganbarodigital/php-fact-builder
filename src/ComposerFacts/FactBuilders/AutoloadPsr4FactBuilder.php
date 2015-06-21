@@ -41,72 +41,43 @@
  * @link      http://code.ganbarodigital.com/php-factfinder
  */
 
-namespace GanbaroDigital\FactFinder\ComposerFacts\ComposerJsonFile;
+namespace GanbaroDigital\FactFinder\ComposerFacts\FactBuilders;
 
-use GanbaroDigital\FactFinder\Core\Data;
-use GanbaroDigital\FactFinder\Core\Fact;
 use GanbaroDigital\FactFinder\Core\FactBuilderFromData;
-use GanbaroDigital\FactFinder\Core\FactBuilderFromFacts;
-use GanbaroDigital\FactFinder\Core\FactBuilderQueue;
-use GanbaroDigital\FactFinder\Core\FactRepository;
-
+use GanbaroDigital\FactFinder\Core\DataTypes\NamespaceData;
 use GanbaroDigital\FactFinder\ComposerFacts;
+use GanbaroDigital\FactFinder\PsrFacts;
 
-class FactBuilder implements FactBuilderFromData, FactBuilderFromFacts
+use GanbaroDigital\FactFinder\ComposerFacts\Facts\ComposerJsonFileFact;
+
+class AutoloadPsr4FactBuilder implements FactBuilderFromData
 {
-	/**
-	 * return a list of the facts that we are interested in exploring
-	 *
-	 * @return array<string>
-	 */
 	static public function getInterestsList()
 	{
 		return [
-			ComposerFacts\Facts\ComposerProjectFact::class
+			ComposerFacts\Facts\ComposerJsonFileFact::class,
 		];
 	}
 
-	public function buildFactsFromData(Data $data)
+	static public function fromComposerJsonFileFact(ComposerJsonFileFact $fact)
 	{
-		switch (get_class($data)) {
-			case FilesystemData::class:
-				// create our new fact
-				$composerJsonFileFact = FactBuilders\ComposerJsonFileFactBuilder::fromFilesystemData($data);
-
-				// what can we learn from this fact?
-				$retval = array_merge([$composerJsonFileFact], $this->expandComposerJsonFileFact($composerJsonFileFact));
-
-				// all done
-				return $retval;
-				break;
-		}
-	}
-
-	public function buildFactsFromFact(Fact $fact)
-	{
-		switch(get_class($fact)) {
-			case ComposerFacts\Facts\ComposerProjectFact::class:
-				// create our new fact
-				$composerJsonFileFact = FactBuilders\ComposerJsonFileFactBuilder::fromComposerProjectFact($fact);
-
-				// what can we learn from this fact?
-				$retval = array_merge([$composerJsonFileFact], $this->expandComposerJsonFileFact($composerJsonFileFact));
-
-				// all done
-				return $retval;
-				break;
-		}
-	}
-
-	protected function expandComposerJsonFileFact($fact)
-	{
-		// our list of additional facts to return
+		// the list of additional data that we are building
 		$retval = [];
 
-		// now, run our collection of fact builders to exact more
-		// meaning from this fact's raw data
-		$retval = array_merge($retval, FactBuilders\AutoloadPsr0FactBuilder::fromComposerJsonFileFact($fact));
-		$retval = array_merge($retval, FactBuilders\AutoloadPsr4FactBuilder::fromComposerJsonFileFact($fact));
+		// we are going to expand on the raw JSON data
+		$composerJson = $fact->getRawJson();
+
+		// do we have anything to do?
+		if (!(isset($composerJson->autoload, $composerJson->autoload->{'psr-4'}))) {
+			return $retval;
+		}
+
+		// at this point, yes we do
+		foreach ($composerJson->autoload->{'psr-4'} as $namespace => $subFolder) {
+			$projectFolder = ComposerFacts\ValueBuilders\PathToAutoloadFolder::fromComposerJsonFileFact($fact, $subFolder);
+			$seedData = new NamespaceData($namespace, $projectFolder, NamespaceData::AUTOLOAD_PSR4);
+			$retval[] = $seedData;
+		}
 
 		// all done
 		return $retval;
