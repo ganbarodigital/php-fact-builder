@@ -62,7 +62,7 @@ class FactBuilder implements FactBuilderFromData, FactBuilderFromFacts
 	static public function getInterestsList()
 	{
 		return [
-			ComposerFacts\ComposerProject\ComposerProjectFact::class
+			ComposerFacts\Facts\ComposerProjectFact::class
 		];
 	}
 
