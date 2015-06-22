@@ -1,4 +1,6 @@
 {
+    "name": "ganbarodigital/php-fact-builder",
+    "description": "Static code analyser for PHP-based projects",
     "require": {
         "php": ">= 5.5",
         "nikic/php-parser": "^1.3",
@@ -10,7 +12,7 @@
     },
     "autoload": {
         "psr-4": {
-            "GanbaroDigital\\FactFinder\\": "src"
+            "GanbaroDigital\\FactBuilder\\": "src"
         }
     }
 }
