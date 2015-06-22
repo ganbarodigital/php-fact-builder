@@ -34,24 +34,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/PhpFacts
+ * @package   FactBuilder/PhpFacts
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @link      http://code.ganbarodigital.com/php-factfinder
+ * @link      http://code.ganbarodigital.com/php-factbuilder
  */
 
-namespace GanbaroDigital\FactFinder\PhpFacts\PhpSourceCodeFile\FactBuilders;
+namespace GanbaroDigital\FactBuilder\PhpFacts\PhpSourceCodeFile\FactBuilders;
 
-use GanbaroDigital\FactFinder\DataFactBuilder;
-use GanbaroDigital\FactFinder\FactBuilderQueue;
-use GanbaroDigital\FactFinder\FactRepository;
-use GanbaroDigital\FactFinder\All\Data;
-use GanbaroDigital\FactFinder\All\DataTypes\FilesystemData;
-use GanbaroDigital\FactFinder\All\DataTypes\PhpFileData;
+use GanbaroDigital\FactBuilder\DataFactBuilder;
+use GanbaroDigital\FactBuilder\FactBuilderQueue;
+use GanbaroDigital\FactBuilder\FactRepository;
+use GanbaroDigital\FactBuilder\All\Data;
+use GanbaroDigital\FactBuilder\All\DataTypes\FilesystemData;
+use GanbaroDigital\FactBuilder\All\DataTypes\PhpFileData;
 
-use GanbaroDigital\FactFinder\PhpFacts\PhpSourceCodeFile\FactBuilders;
-use GanbaroDigital\FactFinder\PhpFacts;
+use GanbaroDigital\FactBuilder\PhpFacts\PhpSourceCodeFile\FactBuilders;
+use GanbaroDigital\FactBuilder\PhpFacts;
 
 class PhpSourceCodeFileFactBuilder
 {

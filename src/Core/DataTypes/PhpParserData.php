@@ -34,17 +34,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/All
+ * @package   FactBuilder/All
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @link      http://code.ganbarodigital.com/php-factfinder
+ * @link      http://code.ganbarodigital.com/php-factbuilder
  */
 
-namespace GanbaroDigital\FactFinder\Core\DataTypes;
+namespace GanbaroDigital\FactBuilder\Core\DataTypes;
 
 use GanbaroDigital\DataContainers\LazyValueObject;
-use GanbaroDigital\FactFinder\Core\Data;
+use GanbaroDigital\FactBuilder\Core\Data;
 
 /**
  * @method array  getAst()

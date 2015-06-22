@@ -34,26 +34,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/PhpFacts
+ * @package   FactBuilder/PhpFacts
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @link      http://code.ganbarodigital.com/php-factfinder
+ * @link      http://code.ganbarodigital.com/php-factbuilder
  */
 
-namespace GanbaroDigital\FactFinder\PhpFacts\GlobalVariable;
+namespace GanbaroDigital\FactBuilder\PhpFacts\GlobalVariable;
 
-use GanbaroDigital\FactFinder\FactFinder;
-use GanbaroDigital\FactFinder\PhpFacts;
+use GanbaroDigital\FactBuilder\FactBuilder;
+use GanbaroDigital\FactBuilder\PhpFacts;
 
-class DefinitionFactFinder implements FactFinder
+class DefinitionFactBuilder implements FactBuilder
 {
 	public function getDependencies()
 	{
 		return [
-			PhpFacts\PhpMethod\DefinitionFactFinder::class,
-			PhpFacts\PhpFunction\DefinitionFactFinder::class,
-			PhpFacts\PhpGlobalCode\DefinitionFactFinder::class,
+			PhpFacts\PhpMethod\DefinitionFactBuilder::class,
+			PhpFacts\PhpFunction\DefinitionFactBuilder::class,
+			PhpFacts\PhpGlobalCode\DefinitionFactBuilder::class,
 		];
 	}
 }

@@ -34,21 +34,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/ComposerFacts
+ * @package   FactBuilder/ComposerFacts
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @link      http://code.ganbarodigital.com/php-factfinder
+ * @link      http://code.ganbarodigital.com/php-factbuilder
  */
 
-namespace GanbaroDigital\FactFinder\ComposerFacts\FactBuilders;
+namespace GanbaroDigital\FactBuilder\ComposerFacts\FactBuilders;
 
-use GanbaroDigital\FactFinder\Core\FactBuilderFromData;
-use GanbaroDigital\FactFinder\Core\DataTypes\NamespaceData;
-use GanbaroDigital\FactFinder\ComposerFacts;
-use GanbaroDigital\FactFinder\PsrFacts;
+use GanbaroDigital\FactBuilder\Core\FactBuilderFromData;
+use GanbaroDigital\FactBuilder\Core\DataTypes\NamespaceData;
+use GanbaroDigital\FactBuilder\ComposerFacts;
+use GanbaroDigital\FactBuilder\PsrFacts;
 
-use GanbaroDigital\FactFinder\ComposerFacts\Facts\ComposerJsonFileFact;
+use GanbaroDigital\FactBuilder\ComposerFacts\Facts\ComposerJsonFileFact;
 
 class AutoloadPsr0FactBuilder implements FactBuilderFromData
 {

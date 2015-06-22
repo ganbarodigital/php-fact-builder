@@ -34,17 +34,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/ComposerFacts
+ * @package   FactBuilder/ComposerFacts
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @link      http://code.ganbarodigital.com/php-factfinder
+ * @link      http://code.ganbarodigital.com/php-factbuilder
  */
 
-namespace GanbaroDigital\FactFinder\ComposerFacts\Facts;
+namespace GanbaroDigital\FactBuilder\ComposerFacts\Facts;
 
-use GanbaroDigital\FactFinder\Core\DefinitionFact;
-use GanbaroDigital\FactFinder\Core\FactTypes\InMemoryFact;
+use GanbaroDigital\FactBuilder\Core\DefinitionFact;
+use GanbaroDigital\FactBuilder\Core\FactTypes\InMemoryFact;
 
 /**
  * string getPathToFile()

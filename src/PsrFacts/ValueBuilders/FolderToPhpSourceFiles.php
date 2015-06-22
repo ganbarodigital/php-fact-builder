@@ -34,16 +34,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/PsrFacts
+ * @package   FactBuilder/PsrFacts
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @link      http://code.ganbarodigital.com/php-factfinder
+ * @link      http://code.ganbarodigital.com/php-factbuilder
  */
 
-namespace GanbaroDigital\FactFinder\PsrFacts\ValueBuilders;
+namespace GanbaroDigital\FactBuilder\PsrFacts\ValueBuilders;
 
-use GanbaroDigital\FactFinder\Core\DataTypes\FilesystemPathData;
+use GanbaroDigital\FactBuilder\Core\DataTypes\FilesystemPathData;
 use GanbaroDigital\Filesystem\ValueBuilders\FolderToMatchingFiles;
 
 class FolderToPhpSourceFiles

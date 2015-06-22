@@ -34,23 +34,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/PsrFacts
+ * @package   FactBuilder/PsrFacts
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @link      http://code.ganbarodigital.com/php-factfinder
+ * @link      http://code.ganbarodigital.com/php-factbuilder
  */
 
-namespace GanbaroDigital\FactFinder\PsrFacts\FactBuilders;
+namespace GanbaroDigital\FactBuilder\PsrFacts\FactBuilders;
 
-use GanbaroDigital\FactFinder\Core\FactBuilderFromData;
-use GanbaroDigital\FactFinder\Core\Data;
-use GanbaroDigital\FactFinder\Core\DataTypes\NamespaceData;
-use GanbaroDigital\FactFinder\Core\DataTypes\PhpFileData;
-use GanbaroDigital\FactFinder\Core\DataTypes\FilesystemPathData;
+use GanbaroDigital\FactBuilder\Core\FactBuilderFromData;
+use GanbaroDigital\FactBuilder\Core\Data;
+use GanbaroDigital\FactBuilder\Core\DataTypes\NamespaceData;
+use GanbaroDigital\FactBuilder\Core\DataTypes\PhpFileData;
+use GanbaroDigital\FactBuilder\Core\DataTypes\FilesystemPathData;
 
-use GanbaroDigital\FactFinder\PhpFacts;
-use GanbaroDigital\FactFinder\PsrFacts;
+use GanbaroDigital\FactBuilder\PhpFacts;
+use GanbaroDigital\FactBuilder\PsrFacts;
 
 class Psr0FolderFactBuilder implements FactBuilderFromData
 {

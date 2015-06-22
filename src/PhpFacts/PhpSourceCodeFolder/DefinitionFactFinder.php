@@ -34,25 +34,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/PhpFacts
+ * @package   FactBuilder/PhpFacts
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @link      http://code.ganbarodigital.com/php-factfinder
+ * @link      http://code.ganbarodigital.com/php-factbuilder
  */
 
-namespace GanbaroDigital\FactFinder\PhpFacts\PhpSourceCodeFolder;
+namespace GanbaroDigital\FactBuilder\PhpFacts\PhpSourceCodeFolder;
 
-use GanbaroDigital\FactFinder\FactFinder;
-use GanbaroDigital\FactFinder\PsrFacts;
+use GanbaroDigital\FactBuilder\FactBuilder;
+use GanbaroDigital\FactBuilder\PsrFacts;
 
-class DefinitionFactFinder implements FactFinder
+class DefinitionFactBuilder implements FactBuilder
 {
 	public function getDependencies()
 	{
 		return [
-			PsrFacts\Psr0Folder\DefinitionFactFinder::class,
-			PsrFacts\Psr4Folder\DefinitionFactFinder::class,
+			PsrFacts\Psr0Folder\DefinitionFactBuilder::class,
+			PsrFacts\Psr4Folder\DefinitionFactBuilder::class,
 		];
 	}
 }

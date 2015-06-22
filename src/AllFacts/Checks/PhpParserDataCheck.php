@@ -34,16 +34,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/AllFacts
+ * @package   FactBuilder/AllFacts
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @link      http://code.ganbarodigital.com/php-factfinder
+ * @link      http://code.ganbarodigital.com/php-factbuilder
  */
 
-namespace GanbaroDigital\FactFinder\AllFacts\Checks;
+namespace GanbaroDigital\FactBuilder\AllFacts\Checks;
 
-use GanbaroDigital\FactFinder\Core\DataTypes\PhpParserData;
+use GanbaroDigital\FactBuilder\Core\DataTypes\PhpParserData;
 
 interface PhpParserCheck
 {

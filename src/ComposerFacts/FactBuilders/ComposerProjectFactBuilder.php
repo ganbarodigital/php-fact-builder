@@ -34,22 +34,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/ComposerFacts
+ * @package   FactBuilder/ComposerFacts
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @link      http://code.ganbarodigital.com/php-factfinder
+ * @link      http://code.ganbarodigital.com/php-factbuilder
  */
 
-namespace GanbaroDigital\FactFinder\ComposerFacts\FactBuilders;
+namespace GanbaroDigital\FactBuilder\ComposerFacts\FactBuilders;
 
-use GanbaroDigital\FactFinder\AllFacts;
-use GanbaroDigital\FactFinder\Core\Fact;
-use GanbaroDigital\FactFinder\Core\FactBuilderQueue;
-use GanbaroDigital\FactFinder\Core\FactRepository;
-use GanbaroDigital\FactFinder\Core\FactBuilderFromData;
-use GanbaroDigital\FactFinder\Core\DataTypes\FilesystemPathData;
-use GanbaroDigital\FactFinder\ComposerFacts;
+use GanbaroDigital\FactBuilder\AllFacts;
+use GanbaroDigital\FactBuilder\Core\Fact;
+use GanbaroDigital\FactBuilder\Core\FactBuilderQueue;
+use GanbaroDigital\FactBuilder\Core\FactRepository;
+use GanbaroDigital\FactBuilder\Core\FactBuilderFromData;
+use GanbaroDigital\FactBuilder\Core\DataTypes\FilesystemPathData;
+use GanbaroDigital\FactBuilder\ComposerFacts;
 
 use GanbaroDigital\Filesystem\Checks\IsValidJsonFile;
 

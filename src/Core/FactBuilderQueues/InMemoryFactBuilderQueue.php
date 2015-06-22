@@ -34,18 +34,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/Core
+ * @package   FactBuilder/Core
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @link      http://code.ganbarodigital.com/php-factfinder
+ * @link      http://code.ganbarodigital.com/php-factbuilder
  */
 
-namespace GanbaroDigital\FactFinder\Core\FactBuilderQueues;
+namespace GanbaroDigital\FactBuilder\Core\FactBuilderQueues;
 
-use GanbaroDigital\FactFinder\Core\Fact;
-use GanbaroDigital\FactFinder\Core\FactBuilderQueue;
-use GanbaroDigital\FactFinder\Core\Data;
+use GanbaroDigital\FactBuilder\Core\Fact;
+use GanbaroDigital\FactBuilder\Core\FactBuilderQueue;
+use GanbaroDigital\FactBuilder\Core\Data;
 
 class InMemoryFactBuilderQueue implements FactBuilderQueue
 {

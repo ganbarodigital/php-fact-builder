@@ -35,26 +35,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/Cli
+ * @package   FactBuilder/Cli
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @link      http://code.ganbarodigital.com/php-factfinder
+ * @link      http://code.ganbarodigital.com/php-factbuilder
  */
 
-use GanbaroDigital\FactFinder\Core\Data;
-use GanbaroDigital\FactFinder\Core\Fact;
-use GanbaroDigital\FactFinder\Core\FactRepositories\InMemoryFactRepository;
-use GanbaroDigital\FactFinder\Core\FactBuilderQueues\InMemoryFactBuilderQueue;
-use GanbaroDigital\FactFinder\Core\FactBuilding\InMemoryInterestsList;
-use GanbaroDigital\FactFinder\Core\FactBuilderFromData;
-use GanbaroDigital\FactFinder\Core\DataTypes\FilesystemPathData;
+use GanbaroDigital\FactBuilder\Core\Data;
+use GanbaroDigital\FactBuilder\Core\Fact;
+use GanbaroDigital\FactBuilder\Core\FactRepositories\InMemoryFactRepository;
+use GanbaroDigital\FactBuilder\Core\FactBuilderQueues\InMemoryFactBuilderQueue;
+use GanbaroDigital\FactBuilder\Core\FactBuilding\InMemoryInterestsList;
+use GanbaroDigital\FactBuilder\Core\FactBuilderFromData;
+use GanbaroDigital\FactBuilder\Core\DataTypes\FilesystemPathData;
 
 // a list of the fact builders that we want to use
 // @TODO: find a way to make this discoverable in code
-use GanbaroDigital\FactFinder\ComposerFacts;
-use GanbaroDigital\FactFinder\PhpFacts;
-use GanbaroDigital\FactFinder\PsrFacts;
+use GanbaroDigital\FactBuilder\ComposerFacts;
+use GanbaroDigital\FactBuilder\PhpFacts;
+use GanbaroDigital\FactBuilder\PsrFacts;
 
 // temporary
 require_once (__DIR__ . '/../vendor/autoload.php');
@@ -74,14 +74,14 @@ if (!class_exists($rootFactBuilderName)) {
 $factRepository = new InMemoryFactRepository();
 
 // we need something to keep track of where we should look next
-$factFinderQueue = new InMemoryFactBuilderQueue();
+$FactBuilderQueue = new InMemoryFactBuilderQueue();
 
 // we're going to seed the whole thing now
-$factFinderSeed = new FilesystemPathData($rootFactSeed);
-$seedFacts = $rootFactBuilderName::fromFilesystemPathData($factFinderSeed);
+$FactBuilderSeed = new FilesystemPathData($rootFactSeed);
+$seedFacts = $rootFactBuilderName::fromFilesystemPathData($FactBuilderSeed);
 foreach ($seedFacts as $fact) {
 	$factRepository->addFact($fact);
-	$factFinderQueue->addFactToExplore($fact);
+	$FactBuilderQueue->addFactToExplore($fact);
 }
 
 // at this point, we (hopefully) have at least one fact in the queue to be
@@ -97,13 +97,17 @@ $knownBuilderClasses = [
 
 	PsrFacts\FactBuilders\Psr0FolderFactBuilder::class,
 	PsrFacts\FactBuilders\Psr4FolderFactBuilder::class,
+
+	PhpFacts\FactBuilders\PhpSourceCodeFileFactBuilder::class,
+	PhpFacts\FactBuilders\PhpNamespaceFactBuilder::class,
+	PhpFacts\FactBuilders\PhpClassFactBuilder::class,
 ];
 foreach($knownBuilderClasses as $knownBuilderClass) {
 	$interestsList->addInterestedBuilderClass($knownBuilderClass);
 }
 
 // this is the fact-finding loop
-while (($item = $factFinderQueue->iterateFromQueue()) !== null) {
+while (($item = $FactBuilderQueue->iterateFromQueue()) !== null) {
 	// what are we looking at?
 	echo "Exploring " . get_class($item) . PHP_EOL . "  " . json_encode($item) . PHP_EOL;
 
@@ -137,7 +141,7 @@ while (($item = $factFinderQueue->iterateFromQueue()) !== null) {
 			}
 
 			// these new items will need exploring
-			$factFinderQueue->addItemToExplore($newItem);
+			$FactBuilderQueue->addItemToExplore($newItem);
 		}
 	}
 }

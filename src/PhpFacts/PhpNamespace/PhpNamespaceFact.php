@@ -34,16 +34,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/PhpFacts
+ * @package   FactBuilder/PhpFacts
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @link      http://code.ganbarodigital.com/php-factfinder
+ * @link      http://code.ganbarodigital.com/php-factbuilder
  */
 
-namespace GanbaroDigital\FactFinder\Facts\NamespaceDefinition;
+namespace GanbaroDigital\FactBuilder\Facts\NamespaceDefinition;
 
-use GanbaroDigital\FactFinder\DefinitionFact;
+use GanbaroDigital\FactBuilder\DefinitionFact;
 
 class PhpNamespaceFact implements DefinitionFact
 {

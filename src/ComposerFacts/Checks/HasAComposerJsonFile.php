@@ -34,20 +34,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/ComposerFacts
+ * @package   FactBuilder/ComposerFacts
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @link      http://code.ganbarodigital.com/php-factfinder
+ * @link      http://code.ganbarodigital.com/php-factbuilder
  */
 
-namespace GanbaroDigital\FactFinder\ComposerFacts\Checks;
+namespace GanbaroDigital\FactBuilder\ComposerFacts\Checks;
 
 use GanbaroDigital\Filesystem\Checks\IsFolder;
 use GanbaroDigital\Filesystem\Checks\IsReadableFile;
 
-use GanbaroDigital\FactFinder\Core\DataTypes\FilesystemPathData;
-use GanbaroDigital\FactFinder\ComposerFacts\ValueBuilders\ComposerJsonFilePathBuilder;
+use GanbaroDigital\FactBuilder\Core\DataTypes\FilesystemPathData;
+use GanbaroDigital\FactBuilder\ComposerFacts\ValueBuilders\ComposerJsonFilePathBuilder;
 
 class HasAComposerJsonFile
 {

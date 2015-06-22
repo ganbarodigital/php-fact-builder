@@ -34,17 +34,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/ComposerFacts
+ * @package   FactBuilder/ComposerFacts
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @link      http://code.ganbarodigital.com/php-factfinder
+ * @link      http://code.ganbarodigital.com/php-factbuilder
  */
 
-namespace GanbaroDigital\FactFinder\ComposerFacts\ValueBuilders;
+namespace GanbaroDigital\FactBuilder\ComposerFacts\ValueBuilders;
 
-use GanbaroDigital\FactFinder\ComposerFacts\ComposerProject\ComposerProjectFact;
-use GanbaroDigital\FactFinder\Core\DataTypes\FilesystemPathData;
+use GanbaroDigital\FactBuilder\ComposerFacts\ComposerProject\ComposerProjectFact;
+use GanbaroDigital\FactBuilder\Core\DataTypes\FilesystemPathData;
 
 class ComposerJsonFilePathBuilder
 {

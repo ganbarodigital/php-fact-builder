@@ -34,17 +34,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   FactFinder/Core
+ * @package   FactBuilder/Core
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @link      http://code.ganbarodigital.com/php-factfinder
+ * @link      http://code.ganbarodigital.com/php-factbuilder
  */
 
-namespace GanbaroDigital\FactFinder\Core\DataTypes;
+namespace GanbaroDigital\FactBuilder\Core\DataTypes;
 
-use GanbaroDigital\FactFinder\Core\Data;
-use GanbaroDigital\FactFinder\Core\FactTypes\InMemoryFact;
+use GanbaroDigital\FactBuilder\Core\Data;
+use GanbaroDigital\FactBuilder\Core\FactTypes\InMemoryFact;
 
 /**
  * @method string getNamespace()
