@@ -43,8 +43,20 @@
 
 namespace GanbaroDigital\FactFinder\Core\DataTypes;
 
+use GanbaroDigital\DataContainers\LazyValueObject;
 use GanbaroDigital\FactFinder\Core\Data;
 
-class PhpParserData implements Data
+/**
+ * @method array  getAst()
+ * @method void   setAst(array $ast)
+ * @method string getPathToFile()
+ * @method void   setPathToFile(string $path)
+ */
+class PhpParserData extends LazyValueObject implements Data
 {
+	public function __construct($ast, $pathToFile = null)
+	{
+		$this->setAst($ast);
+		$this->setPathToFile($pathToFile);
+	}
 }
