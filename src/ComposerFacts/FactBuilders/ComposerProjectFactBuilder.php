@@ -77,7 +77,7 @@ class ComposerProjectFactBuilder implements FactBuilderFromData
 		// our composer file
 		$composerJsonFilename = ComposerFacts\ValueBuilders\ComposerJsonFilePathBuilder::fromFilesystemPathData($fsData);
 
-		if (!IsValidJsonFile::checkFilesystemPathData($composerJsonFilename)) {
+		if (!IsValidJsonFile::checkFilename($composerJsonFilename)) {
 			return $retval;
 		}
 

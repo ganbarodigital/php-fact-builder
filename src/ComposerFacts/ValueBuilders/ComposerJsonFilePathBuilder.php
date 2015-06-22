@@ -57,9 +57,9 @@ class ComposerJsonFilePathBuilder
 
 	static public function fromFilesystemPathData(FilesystemPathData $fsData)
 	{
-		$folderPath = $fsData->getFileOrFolderPath();
+		$folderPath = (string)$fsData;
 		$composerJsonPath = self::addFilenameToPath($folderPath);
-		return new FilesystemPathData($composerJsonPath);
+		return $composerJsonPath;
 	}
 
 	static protected function addFilenameToPath($folderPath)

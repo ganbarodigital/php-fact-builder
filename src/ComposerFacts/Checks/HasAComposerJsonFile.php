@@ -58,7 +58,7 @@ class HasAComposerJsonFile
 		}
 
 		$composerPath = ComposerJsonFilePathBuilder::fromFilesystemPathData($fsData);
-		if (!IsReadableFile::checkFilesystemPathData($composerPath)) {
+		if (!IsReadableFile::checkFilename($composerPath)) {
 			return false;
 		}
 

@@ -41,7 +41,7 @@
  * @link      http://code.ganbarodigital.com/php-factbuilder
  */
 
-namespace GanbaroDigital\FactBuilder\ComposerFacts\FactBuilders;
+namespace GanbaroDigital\FactBuilder\ComposerFacts\DataBuilders;
 
 use GanbaroDigital\FactBuilder\Core\FactBuilderFromData;
 use GanbaroDigital\FactBuilder\Core\DataTypes\NamespaceData;
@@ -50,7 +50,7 @@ use GanbaroDigital\FactBuilder\PsrFacts;
 
 use GanbaroDigital\FactBuilder\ComposerFacts\Facts\ComposerJsonFileFact;
 
-class AutoloadPsr0FactBuilder implements FactBuilderFromData
+class AutoloadPsr0DataBuilder implements FactBuilderFromData
 {
 	static public function getInterestsList()
 	{
