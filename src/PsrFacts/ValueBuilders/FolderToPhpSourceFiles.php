@@ -43,7 +43,7 @@
 
 namespace GanbaroDigital\FactFinder\PsrFacts\ValueBuilders;
 
-use GanbaroDigital\Filesystem\DataTypes\FilesystemPathData;
+use GanbaroDigital\FactFinder\Core\DataTypes\FilesystemPathData;
 use GanbaroDigital\Filesystem\ValueBuilders\FolderToMatchingFiles;
 
 class FolderToPhpSourceFiles

@@ -43,14 +43,13 @@
 
 namespace GanbaroDigital\FactFinder\ComposerFacts\Checks;
 
-use GanbaroDigital\Filesystem\Checks\FilesystemPathCheck;
 use GanbaroDigital\Filesystem\Checks\IsFolder;
 use GanbaroDigital\Filesystem\Checks\IsReadableFile;
-use GanbaroDigital\Filesystem\DataTypes\FilesystemPathData;
 
+use GanbaroDigital\FactFinder\Core\DataTypes\FilesystemPathData;
 use GanbaroDigital\FactFinder\ComposerFacts\ValueBuilders\ComposerJsonFilePathBuilder;
 
-class HasAComposerJsonFile implements FilesystemPathCheck
+class HasAComposerJsonFile
 {
 	static public function checkFilesystemPathData(FilesystemPathData $fsData)
 	{

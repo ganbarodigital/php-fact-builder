@@ -44,41 +44,8 @@
 namespace GanbaroDigital\FactFinder\Core\DataTypes;
 
 use GanbaroDigital\FactFinder\Core\Data;
+use GanbaroDigital\Filesystem\DataTypes\FilesystemPathData as BaseClass;
 
-class FilesystemData implements Data
+class FilesystemPathData extends BaseClass implements Data
 {
-	/**
-	 * path to either a file or folder to examine
-	 *
-	 * @var string
-	 */
-	protected $fileOrFolderPath;
-
-	public function __construct($fileOrFolderPath)
-	{
-		$this->setFileOrFolderPath($fileOrFolderPath);
-	}
-
-	/**
-	 * which file or folder are we wrapping?
-	 *
-	 * @return string
-	 */
-	public function getFileOrFolderPath()
-	{
-	    return $this->fileOrFolderPath;
-	}
-
-	/**
-	 * tell us which file or folder we are representing
-	 *
-	 * @param  string $fileOrFolderPath
-	 * @return void
-	 */
-	public function setFileOrFolderPath($fileOrFolderPath)
-	{
-	    $this->fileOrFolderPath = $fileOrFolderPath;
-
-	    return $this;
-	}
 }

@@ -47,7 +47,7 @@ use GanbaroDigital\FactFinder\Core\FactBuilderFromData;
 use GanbaroDigital\FactFinder\Core\Data;
 use GanbaroDigital\FactFinder\Core\DataTypes\NamespaceData;
 use GanbaroDigital\FactFinder\Core\DataTypes\PhpFileData;
-use GanbaroDigital\Filesystem\DataTypes\FilesystemPathData;
+use GanbaroDigital\FactFinder\Core\DataTypes\FilesystemPathData;
 
 use GanbaroDigital\FactFinder\PhpFacts;
 use GanbaroDigital\FactFinder\PsrFacts;

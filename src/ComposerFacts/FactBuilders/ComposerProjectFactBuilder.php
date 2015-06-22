@@ -48,10 +48,10 @@ use GanbaroDigital\FactFinder\Core\Fact;
 use GanbaroDigital\FactFinder\Core\FactBuilderQueue;
 use GanbaroDigital\FactFinder\Core\FactRepository;
 use GanbaroDigital\FactFinder\Core\FactBuilderFromData;
+use GanbaroDigital\FactFinder\Core\DataTypes\FilesystemPathData;
 use GanbaroDigital\FactFinder\ComposerFacts;
 
 use GanbaroDigital\Filesystem\Checks\IsValidJsonFile;
-use GanbaroDigital\Filesystem\DataTypes\FilesystemPathData;
 
 class ComposerProjectFactBuilder implements FactBuilderFromData
 {

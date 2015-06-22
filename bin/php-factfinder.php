@@ -48,8 +48,7 @@ use GanbaroDigital\FactFinder\Core\FactRepositories\InMemoryFactRepository;
 use GanbaroDigital\FactFinder\Core\FactBuilderQueues\InMemoryFactBuilderQueue;
 use GanbaroDigital\FactFinder\Core\FactBuilding\InMemoryInterestsList;
 use GanbaroDigital\FactFinder\Core\FactBuilderFromData;
-
-use GanbaroDigital\Filesystem\DataTypes\FilesystemPathData;
+use GanbaroDigital\FactFinder\Core\DataTypes\FilesystemPathData;
 
 // a list of the fact builders that we want to use
 // @TODO: find a way to make this discoverable in code
