@@ -59,4 +59,9 @@ class PhpFileData extends InMemoryFact implements Data
 		$this->setPathToFile($pathToFile);
 		$this->setNamespace($namespace);
 	}
+
+	public function __toString()
+	{
+		return $this->getPathToFile();
+	}
 }
