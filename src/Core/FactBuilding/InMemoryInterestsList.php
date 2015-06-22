@@ -62,6 +62,7 @@ class InMemoryInterestsList
 		$interests = $className::getInterestsList();
 		foreach ($interests as $factClass) {
 			$this->interests[$factClass][] = $className;
+			echo "{$className} is interested in {$factClass}" . PHP_EOL;
 		}
 	}
 
