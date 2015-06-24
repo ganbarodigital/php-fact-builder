@@ -44,41 +44,43 @@
 namespace GanbaroDigital\FactBuilder\PsrFacts\FactBuilders;
 
 use GanbaroDigital\FactBuilder\Core\FactBuilderFromData;
-use GanbaroDigital\FactBuilder\Core\Data;
-use GanbaroDigital\FactBuilder\Core\DataTypes\NamespaceData;
 use GanbaroDigital\FactBuilder\Core\DataTypes\PhpFileData;
 use GanbaroDigital\FactBuilder\Core\DataTypes\FilesystemPathData;
 
 use GanbaroDigital\FactBuilder\PhpFacts;
 use GanbaroDigital\FactBuilder\PsrFacts;
 
-class Psr4FolderFactBuilder implements FactBuilderFromData
+use GanbaroDigital\Filesystem;
+
+class Psr4AutoloaderFolderFactBuilder implements FactBuilderFromData
 {
 	static public function getInterestsList()
 	{
 		return [
-			NamespaceData::class,
+			PsrFacts\DataTypes\Psr4AutoloaderFolderData::class
 		];
 	}
 
-	static public function fromNamespaceData(Data $data)
+	static public function fromPsr4AutoloaderFolderData(PsrFacts\DataTypes\Psr4AutoloaderFolderData $data)
 	{
 		// our return value
 		$retval = [];
 
-		if ($data->getAutoloadScheme() !== NamespaceData::AUTOLOAD_PSR4) {
-			return $retval;
-		}
-
-		// at this point, we are interested
-		$path      = $data->getFolder();
+		// what are we starting from?
+		$path      = $data->getPathToFolder();
 		$namespace = $data->getNamespace();
 
-		$data = new FilesystemPathData($path);
-		$phpFiles = PsrFacts\ValueBuilders\FolderToPhpSourceFiles::fromFilesystemPathData($data);
+		// let's build up a list of facts from here
+		$fsPath = new FilesystemPathData($path);
+		$folders = Filesystem\ValueBuilders\ExplodeFolderList::fromFilesystemPathData($fsPath);
 
-		foreach ($phpFiles as $phpFile) {
-			$retval[] = new PhpFileData($phpFile, $namespace);
+		// convert the list of folders into a list of possible namespaces
+		foreach ($folders as $folder) {
+			// this is the PSR4 namespace that we expect for files in this
+			// folder
+			$namespace = $namespace . '\\' . basename($folder);
+			$fact = new PsrFacts\Facts\Psr4AutoloaderFolderFact($folder, $namespace);
+			$retval[] = $fact;
 		}
 
 		// all done
