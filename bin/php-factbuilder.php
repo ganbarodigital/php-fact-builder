@@ -52,6 +52,7 @@ use GanbaroDigital\FactBuilder\Core\FactBuilding\InMemoryInterestsList;
 use GanbaroDigital\FactBuilder\Core\FactBuilding\InMemoryRelationshipRepository;
 use GanbaroDigital\FactBuilder\Core\FactBuilderFromData;
 use GanbaroDigital\FactBuilder\Core\DataTypes\FilesystemPathData;
+use GanbaroDigital\Reflection\Filters\FilterNamespace;
 
 // a list of the fact builders that we want to use
 // @TODO: find a way to make this discoverable in code
@@ -126,8 +127,7 @@ while (($item = $FactBuilderQueue->iterateFromQueue()) !== null) {
 	foreach ($factBuilderClasses as $factBuilderClass) {
 		// this class seems interested
 		echo "  sending to " . $factBuilderClass . PHP_EOL;
-		$parts = explode('\\', get_class($item));
-		$method = 'from' . end($parts);
+		$method = 'from' . FilterNamespace::fromString(get_class($item));
 
 		if (!method_exists($factBuilderClass, $method)) {
 			die("class " . $factBuilderClass . " does not accept " . get_class($item) . " items" . PHP_EOL);
