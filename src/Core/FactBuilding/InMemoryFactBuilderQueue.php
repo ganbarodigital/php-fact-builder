@@ -41,7 +41,7 @@
  * @link      http://code.ganbarodigital.com/php-factbuilder
  */
 
-namespace GanbaroDigital\FactBuilder\Core\FactBuilderQueues;
+namespace GanbaroDigital\FactBuilder\Core\FactBuilding;
 
 use GanbaroDigital\FactBuilder\Core\Fact;
 use GanbaroDigital\FactBuilder\Core\FactBuilderQueue;

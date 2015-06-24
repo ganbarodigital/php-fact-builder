@@ -44,8 +44,8 @@
 
 use GanbaroDigital\FactBuilder\Core\Data;
 use GanbaroDigital\FactBuilder\Core\Fact;
-use GanbaroDigital\FactBuilder\Core\FactRepositories\InMemoryFactRepository;
-use GanbaroDigital\FactBuilder\Core\FactBuilderQueues\InMemoryFactBuilderQueue;
+use GanbaroDigital\FactBuilder\Core\FactBuilding\InMemoryFactRepository;
+use GanbaroDigital\FactBuilder\Core\FactBuilding\InMemoryFactBuilderQueue;
 use GanbaroDigital\FactBuilder\Core\FactBuilding\InMemoryInterestsList;
 use GanbaroDigital\FactBuilder\Core\FactBuilderFromData;
 use GanbaroDigital\FactBuilder\Core\DataTypes\FilesystemPathData;
