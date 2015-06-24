@@ -73,6 +73,7 @@ class Psr0AutoloaderFolderDataBuilder implements FactBuilderFromData
 
 		// at this point, yes we do
 		foreach ($composerJson->autoload->{'psr-0'} as $namespace => $subFolder) {
+			$namespace = PsrFacts\ValueBuilders\PsrNamespaceNormaliser::normaliseNamespace($namespace);
 			$projectFolder = ComposerFacts\ValueBuilders\PathToAutoloadFolder::fromComposerJsonFileFact($fact, $subFolder);
 			$data = new PsrFacts\DataTypes\Psr0AutoloaderFolderData($projectFolder, $namespace);
 			$retval[] = $data;
