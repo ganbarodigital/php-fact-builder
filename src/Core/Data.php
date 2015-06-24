@@ -43,6 +43,6 @@
 
 namespace GanbaroDigital\FactBuilder\Core;
 
-interface Data
+interface Data extends Exploreable
 {
 }

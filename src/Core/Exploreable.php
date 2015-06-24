@@ -43,7 +43,7 @@
 
 namespace GanbaroDigital\FactBuilder\Core;
 
-interface Fact extends Exploreable
+interface Exploreable
 {
 
 }
