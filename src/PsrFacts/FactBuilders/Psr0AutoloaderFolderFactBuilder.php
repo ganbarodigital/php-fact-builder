@@ -44,41 +44,51 @@
 namespace GanbaroDigital\FactBuilder\PsrFacts\FactBuilders;
 
 use GanbaroDigital\FactBuilder\Core\FactBuilderFromData;
-use GanbaroDigital\FactBuilder\Core\Data;
-use GanbaroDigital\FactBuilder\Core\DataTypes\NamespaceData;
 use GanbaroDigital\FactBuilder\Core\DataTypes\PhpFileData;
 use GanbaroDigital\FactBuilder\Core\DataTypes\FilesystemPathData;
 
 use GanbaroDigital\FactBuilder\PhpFacts;
 use GanbaroDigital\FactBuilder\PsrFacts;
+use GanbaroDigital\Filesystem;
 
-class Psr0FolderFactBuilder implements FactBuilderFromData
+class Psr0AutoloaderFolderFactBuilder implements FactBuilderFromData
 {
 	static public function getInterestsList()
 	{
 		return [
-			NamespaceData::class,
+			PsrFacts\DataTypes\Psr0AutoloaderFolderData::class
 		];
 	}
 
-	static public function fromNamespaceData(NamespaceData $data)
+	static public function fromPsr0AutoloaderFolderData(PsrFacts\DataTypes\Psr0AutoloaderFolderData $data)
 	{
 		// our return value
 		$retval = [];
 
-		if ($data->getAutoloadScheme() !== NamespaceData::AUTOLOAD_PSR0) {
-			return $retval;
-		}
-
-		// at this point, we are interested
-		$path      = $data->getFolder();
+		// what are we starting from?
+		$path      = $data->getPathToFolder();
 		$namespace = $data->getNamespace();
 
-		$data = new FilesystemPathData($path);
-		$phpFiles = PsrFacts\ValueBuilders\FolderToPhpSourceFiles::fromFilesystemPathData($data);
+		// let's build up a list of facts from here
+		$fsPath = new FilesystemPathData($path);
+		$folders = Filesystem\ValueBuilders\ExplodeFolderList::fromFilesystemPathData($fsPath);
 
-		foreach ($phpFiles as $phpFile) {
-			$retval[] = new PhpFileData($phpFile, $namespace);
+		// PSR-0 complicates things a little, because (like PEAR before it)
+		// an _ in a class name can be a folder separator
+		//
+		// that means that any sub-folder can be a namespace, or it can be
+		// part of the namespace of the parent folder
+		//
+		// it's a very handy feature of PSR-0 for developers
+		//
+		// for static analysis, the best we can do is capture the top-level
+		// path and namespace, so that any checker has the data necessary
+		// to work out whether code in the folder is PSR-0-compliant or not
+
+		// convert the list of folders into a list of possible namespaces
+		foreach ($folders as $folder) {
+			$fact = new PsrFacts\Facts\Psr0AutoloaderFolderFact($folder, $path, $namespace);
+			$retval[] = $fact;
 		}
 
 		// all done
