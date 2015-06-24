@@ -49,6 +49,7 @@ use GanbaroDigital\FactBuilder\Core\FactBuilderFromData;
 use GanbaroDigital\FactBuilder\Core\FactBuilderFromFacts;
 use GanbaroDigital\FactBuilder\Core\FactBuilderQueue;
 use GanbaroDigital\FactBuilder\Core\FactRepository;
+use GanbaroDigital\FactBuilder\Core\RelatedFacts;
 
 use GanbaroDigital\FactBuilder\ComposerFacts;
 
@@ -66,10 +67,22 @@ class ComposerJsonFileFactBuilder implements FactBuilderFromData, FactBuilderFro
 		];
 	}
 
-	static public function fromComposerProjectFact(ComposerFacts\Facts\ComposerProjectFact $fact)
+	static public function fromComposerProjectFact(ComposerFacts\Facts\ComposerProjectFact $composerProjectFact)
 	{
-		$composerJsonFilename = $fact->getComposerJsonFilename();
-		return self::fromFilename($composerJsonFilename);
+		$retval = [];
+
+		$composerJsonFilename = $composerProjectFact->getComposerJsonFilename();
+		$composerJsonFacts = self::fromFilename($composerJsonFilename);
+		$retval = $composerJsonFacts;
+
+		// these facts are related
+		$dependencyOf = new ComposerFacts\Relationships\DependencyOf($composerProjectFact);
+		foreach ($composerJsonFacts as $composerJsonFact) {
+			$retval[] = new RelatedFacts($composerJsonFact, $dependencyOf);
+		}
+
+		// all done
+		return $retval;
 	}
 
 	static public function fromFilesystemData(FilesystemData $fsData)

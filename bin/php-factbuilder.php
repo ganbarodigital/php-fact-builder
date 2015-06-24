@@ -43,10 +43,13 @@
  */
 
 use GanbaroDigital\FactBuilder\Core\Data;
+use GanbaroDigital\FactBuilder\Core\Exploreable;
 use GanbaroDigital\FactBuilder\Core\Fact;
+use GanbaroDigital\FactBuilder\Core\Relationship;
 use GanbaroDigital\FactBuilder\Core\FactBuilding\InMemoryFactRepository;
 use GanbaroDigital\FactBuilder\Core\FactBuilding\InMemoryFactBuilderQueue;
 use GanbaroDigital\FactBuilder\Core\FactBuilding\InMemoryInterestsList;
+use GanbaroDigital\FactBuilder\Core\FactBuilding\InMemoryRelationshipRepository;
 use GanbaroDigital\FactBuilder\Core\FactBuilderFromData;
 use GanbaroDigital\FactBuilder\Core\DataTypes\FilesystemPathData;
 
@@ -70,8 +73,9 @@ if (!class_exists($rootFactBuilderName)) {
 	die("Cannot find fact builder class '{$rootFactBuilderName}" . PHP_EOL);
 }
 
-// we need something to store the facts in
+// we need somewhere to store the things we learn
 $factRepository = new InMemoryFactRepository();
+$relationshipRepository = new InMemoryRelationshipRepository();
 
 // we need something to keep track of where we should look next
 $FactBuilderQueue = new InMemoryFactBuilderQueue();
@@ -136,12 +140,18 @@ while (($item = $FactBuilderQueue->iterateFromQueue()) !== null) {
 		echo "  discovered " . count($newItems) . " item(s) to explore" . PHP_EOL;
 		foreach ($newItems as $newItem) {
 			if ($newItem instanceof Fact) {
-				// remember our new facts for future discovery
+				// remember our new facts for future data mining
 				$factRepository->addFact($newItem);
 			}
+			if ($newItem instanceof Relationship) {
+				// remember our new relationships for future data mining
+				$relationshipRepository->addRelationship($newItem);
+			}
 
-			// these new items will need exploring
-			$FactBuilderQueue->addItemToExplore($newItem);
+			if ($newItem instanceof Exploreable) {
+				// these new items will need exploring
+				$FactBuilderQueue->addItemToExplore($newItem);
+			}
 		}
 	}
 }
@@ -149,4 +159,6 @@ while (($item = $FactBuilderQueue->iterateFromQueue()) !== null) {
 // to make it easier to inspect, dump the facts as JSON
 echo PHP_EOL;
 echo "Final set of facts are:" . PHP_EOL . PHP_EOL;
-echo json_encode($factRepository->getFacts(), JSON_PRETTY_PRINT) . PHP_EOL;
+echo json_encode($factRepository->getFacts(), JSON_PRETTY_PRINT) . PHP_EOL . PHP_EOL;
+echo "Final set of relationships is:" . PHP_EOL . PHP_EOL;
+var_dump($relationshipRepository->getRelationships());
