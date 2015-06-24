@@ -72,7 +72,7 @@ class Psr4AutoloaderFolderFactBuilder implements FactBuilderFromData
 
 		// let's build up a list of facts from here
 		$fsPath = new FilesystemPathData($path);
-		$folders = Filesystem\ValueBuilders\ExplodeFolderList::fromFilesystemPathData($fsPath);
+		$folders = Filesystem\ValueBuilders\MatchingFolders::fromFilesystemPathData($fsPath);
 
 		// convert the list of folders into a list of possible namespaces
 		foreach ($folders as $folder) {

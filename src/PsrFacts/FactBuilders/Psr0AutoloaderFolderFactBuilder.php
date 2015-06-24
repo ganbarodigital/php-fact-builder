@@ -71,7 +71,7 @@ class Psr0AutoloaderFolderFactBuilder implements FactBuilderFromData
 
 		// let's build up a list of facts from here
 		$fsPath = new FilesystemPathData($path);
-		$folders = Filesystem\ValueBuilders\ExplodeFolderList::fromFilesystemPathData($fsPath);
+		$folders = Filesystem\ValueBuilders\MatchingFolders::fromFilesystemPathData($fsPath);
 
 		// PSR-0 complicates things a little, because (like PEAR before it)
 		// an _ in a class name can be a folder separator
