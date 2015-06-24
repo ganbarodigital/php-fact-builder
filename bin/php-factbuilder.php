@@ -92,11 +92,11 @@ $interestsList = new InMemoryInterestsList();
 $knownBuilderClasses = [
 	ComposerFacts\FactBuilders\ComposerProjectFactBuilder::class,
 	ComposerFacts\FactBuilders\ComposerJsonFileFactBuilder::class,
-	ComposerFacts\DataBuilders\AutoloadPsr0DataBuilder::class,
-	ComposerFacts\DataBuilders\AutoloadPsr4DataBuilder::class,
 
-	PsrFacts\FactBuilders\Psr0FolderFactBuilder::class,
-	PsrFacts\FactBuilders\Psr4FolderFactBuilder::class,
+	PsrFacts\DataBuilders\Psr0AutoloaderFolderDataBuilder::class,
+	PsrFacts\DataBuilders\Psr4AutoloaderFolderDataBuilder::class,
+	PsrFacts\FactBuilders\Psr0AutoloaderFolderFactBuilder::class,
+	PsrFacts\FactBuilders\Psr4AutoloaderFolderFactBuilder::class,
 
 	PhpFacts\FactBuilders\PhpSourceCodeFileFactBuilder::class,
 	PhpFacts\FactBuilders\PhpNamespaceFactBuilder::class,
